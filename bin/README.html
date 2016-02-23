@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html><head><title>CSCI 515 Compiler Design Utilities</title></head><body>
+
+  <h1>CSCI 515 Compiler Design Utilities</h1>
+
+  <p>These bash scripts will save you many hours.  <b>Make sure you learn to use them.</b></p>
+<p>This <i>bin</i> directory is include in <a href="../downloads">downloads/gpl.tar</a></p>
+<p>Make sure you set up your shell $PATH variable so that you can use these scripts (add "PATH=$PATH:~/515/bin" to ~/.bash_profile or ~/.bashrc if you put the bin directory in ~/515).  Ask for help if you can't set your path correctly (it is correct if "$ which gt" returns the directory where you put the gt script).</p>
+<hr>
+<h3>Commands</h3>
+<ul>
+  <li><b>gt/test_p2</b>  gpl tests scripts (test_p2 or p2, gt for p3 - p8)<br><br>
+  execute gt and test_p2 in a phase src directory (e.g. 515/p5) and it will execute all the 
+  tests in the <i>tests</i> directory and tell you if you passed or failed the test.
+<pre><blockquote>
+~/515/src/p5$ gt
+Passed t000
+Passed t001
+Passed t002
+Failed t005: &lt;stdout incorrect&gt;
+Passed t004
+Failed t005: &lt;stdout incorrect&gt; &lt;stderr incorrect&gt;
+Passed t006
+Passed t007
+Passed t008
+Passed t010
+Passed t011
+Passed t012
+Passed t015
+Passed t014
+Passed t015
+Passed 15 out of 15 tests.
+Failed 2 out of 15 tests.
+~/515/src/p5$   
+</blockquote></pre>
+<br>
+If you have never used one of my testing scripts, <a href="../../general/how_to_test.html">reading about how it works may save you time.</a><br><br>
+
+  </li>
+  <li><b>vd</b>  script shows you why you failed the standard output of a test using the vimdif utility to compare your output to the correct output
+<pre><blockquote>
+Example: You failed the standard output (stdout) on test t005 (as shown above)
+
+$ vd 05
+
+If tests/t005.out and results/t005.myout are different, vimdiff is started:
+
+$ vimdiff tests/t005.out results/t005.myout
+
+You will be using the vim editor to view the changes.  You can move around the files using the arrows.  You can exit vimdiff by typing ":qa" and then pressing the enter key.
+
+If tests/t005.out and results/t005.myout are the same, a message is printed
+
+</blockquote></pre>
+  </li>
+  <li><b>vde</b>  just like vd (above) but compares the standard error (stderr) files<br>
+<pre><blockquote>
+Example:
+
+You failed the standard error on test t005 (as shown above)
+
+$ vde 05
+
+If tests/t005.err and results/t005.myerr are different, vimdiff is started:
+
+$ vimdiff tests/t005.err results/t005.myerr
+
+If tests/t005.err and results/t005.myerr are the same, a message is printed
+
+</blockquote></pre>
+  </li>
+  <li>
+  <b>gitignore</b> this is the .gitignore you MUST use for phases p2-p8.  See the <a href="../git.html">git instructions.</a>  The gpl.tar file also puts it in gpl/.gitignore (where it belongs).
+  </li>
+</ul>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+</body></html>
