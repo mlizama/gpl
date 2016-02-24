@@ -5,7 +5,7 @@
 extern int yylex();               // this lexer function returns next token
 extern int yyerror(const char *); // used to print errors
 extern int line_count;            // current line in the input; from record.l
-
+#include "symbol_table.h"
 #include "error.h"      // class for printing errors (used by gpl)
 #include "parser.h"
 #include "symbol.h"
@@ -133,7 +133,7 @@ int lines = 0;
 %token T_ERROR               "error"
 
 %type <union_gpl_type> simple_type
-%type <%union> optional_initializer
+//%type <%union> optional_initializer
 
 %left T_OR;
 %left T_AND;
@@ -172,19 +172,26 @@ declaration:
 
 //---------------------------------------------------------------------
 variable_declaration:
+
     simple_type  T_ID  optional_initializer
     {
+
+	Symbol_table *table = Symbol_table::instance();
+
 	if($1 == INT)
 	{
 		Symbol *tmp = new Symbol(*$2,42);
+		table->addSymbol(*$2,tmp);
 	}
 	else if($1 == DOUBLE)
 	{
 		Symbol *tmp = new Symbol(*$2,3.145);
+		table->addSymbol(*$2,tmp);
 	}
 	else if($1 == STRING)
 	{
 		Symbol *tmp = new Symbol(*$2,"Hello world");
+		table->addSymbol(*$2,tmp);
 	}
     }
     | simple_type  T_ID  T_LBRACKET expression T_RBRACKET

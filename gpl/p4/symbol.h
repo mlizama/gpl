@@ -2,7 +2,8 @@
 #include <iostream>
 
 using namespace std;
-
+#ifndef SYMBOL_H
+#define SYMBOL_H
 class Symbol
 {
 
@@ -18,3 +19,5 @@ class Symbol
 	void print(ostream &os);
 
 };
+
+#endif

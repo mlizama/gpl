@@ -13,6 +13,7 @@ class Symbol
 	Symbol(string name, int value);
 	Symbol(string name, double value);
         Symbol(string name, string value);
+	Symbol(string name, Gpl_type type, int size);
 
 	void print(ostream &os);
 

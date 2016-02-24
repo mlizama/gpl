@@ -62,18 +62,18 @@ Symbol::Symbol(string name, Gpl_type type, int size)
 
 void Symbol::print(ostream &os)
 {
-	/*if(s_type == INT)
+	if(s_type == INT)
 	{
-		os << "int " << s_name << " " << i_value << endl;
+		os << "int " << s_id << " = " << *((int*)s_data) << endl;
 	}
 	else if(s_type == DOUBLE)
 	{
-		os << "double " << s_name << " " << d_value << endl;
+		os << "double " << s_id << " = " << *((double*)s_data) << endl;
 	}
 	else if(s_type == STRING)
 	{
-		os << "string " << s_name << " \"" << s_value <<"\"" << endl;
-	}*/
+		os << "string " << s_id << " = \"" << *((string*)s_data) <<"\"" << endl;
+	}
 }
 
 
