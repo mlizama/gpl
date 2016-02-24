@@ -10,7 +10,7 @@ results/
 *.tar
 
 # ignore the gpl executable
-#gpl
+gpl
 
 # flex/bison generated files
 y.output
@@ -50,5 +50,3 @@ lex.yy.c
 *.exe
 *.out
 *.app
-Status API Training Shop Blog About Pricing
-
