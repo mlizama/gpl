@@ -8,6 +8,7 @@ extern int line_count;            // current line in the input; from record.l
 
 #include "error.h"      // class for printing errors (used by gpl)
 #include "parser.h"
+#include "symbol.h"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -132,6 +133,7 @@ int lines = 0;
 %token T_ERROR               "error"
 
 %type <union_gpl_type> simple_type
+%type <%union> optional_initializer
 
 %left T_OR;
 %left T_AND;
@@ -171,6 +173,20 @@ declaration:
 //---------------------------------------------------------------------
 variable_declaration:
     simple_type  T_ID  optional_initializer
+    {
+	if($1 == INT)
+	{
+		Symbol *tmp = new Symbol(*$2,42);
+	}
+	else if($1 == DOUBLE)
+	{
+		Symbol *tmp = new Symbol(*$2,3.145);
+	}
+	else if($1 == STRING)
+	{
+		Symbol *tmp = new Symbol(*$2,"Hello world");
+	}
+    }
     | simple_type  T_ID  T_LBRACKET expression T_RBRACKET
     ;
 
