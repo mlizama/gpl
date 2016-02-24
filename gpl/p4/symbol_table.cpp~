@@ -1,14 +1,23 @@
 
 #include "symbol_table.h"
 #include "error.h"
+#include <vector>
 #include <sstream>
+#include <algorithm>
 
 void Symbol_table::print(ostream &os)
 {
+	vector<string> names;
 	//iterate through symbols and print them 
-	for(map <string, Symbol*>::iterator iter = symbol_map.begin();iter != symbol_map.end();iter++)
+	for(unordered_map <string, Symbol*>::iterator iter = symbol_map.begin();iter != symbol_map.end();iter++)
+	{	
+		names.push_back(iter->second->s_id);
+		//iter->second->print(os);
+	}
+	std::sort(names.begin(),names.end());
+	for(int x = 0;x<names.size();x++)
 	{
-		iter->second->print(os);
+		((symbol_map.find(names[x]))->second)->print(os);
 	}
 }
 Symbol_table *Symbol_table::m_instance = NULL;

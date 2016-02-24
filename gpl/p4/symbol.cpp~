@@ -79,7 +79,7 @@ void Symbol::print(ostream &os)
 	{
 		for(int x = 0; x < s_size;x++)
 		{
-			os << "int " << s_id << "[" << x << "]" << *((int*)s_data) << endl;
+			os << "int " << s_id << "[" << x << "]" << " = "<< *((int*)s_data) << endl;
 			
 		}
 	}
@@ -87,7 +87,7 @@ void Symbol::print(ostream &os)
 	{
 		for(int x = 0; x < s_size;x++)
 		{
-			os << "double " << s_id << "[" << x << "]" << *((double*)s_data) << endl;
+			os << "double " << s_id << "[" << x << "]"  << " = "<< *((double*)s_data) << endl;
 			
 		}
 	}
@@ -95,7 +95,7 @@ void Symbol::print(ostream &os)
 	{
 		for(int x = 0; x < s_size;x++)
 		{
-			os << "string " << s_id << "[" << x << "]" << *((string*)s_data) << endl;
+			os << "string " << s_id << "[" << x << "]"  << " = "<< *((string*)s_data) << endl;
 			
 		}
 	}

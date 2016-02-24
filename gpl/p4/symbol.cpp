@@ -44,7 +44,7 @@ Symbol::Symbol(string name, Gpl_type type, int size)
 		double *tmp = new double[size];
 		for(int x = 0; x<size; x++)
 		{
-			tmp[x] = 3.145;
+			tmp[x] = 3.14159;
 		}
 		s_data = (void*)tmp;
 	}
@@ -95,7 +95,8 @@ void Symbol::print(ostream &os)
 	{
 		for(int x = 0; x < s_size;x++)
 		{
-			os << "string " << s_id << "[" << x << "]"  << " = "<< *((string*)s_data) << endl;
+			os << "string " << s_id << "[" << x << "]"  << " = "<< "\""
+			   <<*((string*)s_data) << "\""<< endl;
 			
 		}
 	}
