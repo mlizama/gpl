@@ -15,7 +15,7 @@ void Symbol_table::print(ostream &os)
 		//iter->second->print(os);
 	}
 	std::sort(names.begin(),names.end());
-	for(int x = 0;x<names.size();x++)
+	for(int x = 0;x<(int)names.size();x++)
 	{
 		((symbol_map.find(names[x]))->second)->print(os);
 	}

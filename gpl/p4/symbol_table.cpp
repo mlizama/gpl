@@ -40,9 +40,5 @@ void Symbol_table::addSymbol(string key,Symbol *symbol)
                 Error::error(Error::PREVIOUSLY_DECLARED_VARIABLE, key);
 	}
 }
-/*bool Symbol_table::exists(string key)
-{
-	if(symbol_map.find(key) != symbol_map.end()){return true;}
-	else return false;
-}*/
+
 

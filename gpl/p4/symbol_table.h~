@@ -1,6 +1,6 @@
 
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include "symbol.h"
 using namespace std;
 
