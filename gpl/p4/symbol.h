@@ -8,6 +8,7 @@ class Symbol
 {
 
 	public: string   s_id;
+		int	 s_size;
 		Gpl_type s_type;
 		void *   s_data;
 

@@ -194,7 +194,27 @@ variable_declaration:
 		table->addSymbol(*$2,tmp);
 	}
     }
-    | simple_type  T_ID  T_LBRACKET expression T_RBRACKET
+    | simple_type  T_ID  T_LBRACKET T_INT_CONSTANT T_RBRACKET
+    {
+	Symbol_table *table = Symbol_table::instance();
+
+	if($1 == INT)
+	{
+		Symbol *tmp = new Symbol(*$2,INT_ARRAY,$4);
+		table->addSymbol(*$2,tmp);
+	}
+	if($1 == DOUBLE)
+	{
+		Symbol *tmp = new Symbol(*$2,DOUBLE_ARRAY,$4);
+		table->addSymbol(*$2,tmp);
+	}
+	if($1 == STRING)
+	{
+		Symbol *tmp = new Symbol(*$2,STRING_ARRAY,$4);
+		table->addSymbol(*$2,tmp);
+	}
+    }
+	
     ;
 
 //---------------------------------------------------------------------

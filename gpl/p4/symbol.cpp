@@ -28,7 +28,8 @@ Symbol::Symbol(string name, Gpl_type type, int size)
 {
 	s_type = type;
 	s_id = name;
-	
+	s_size = size;
+
 	if(type == INT_ARRAY)
 	{
 		int *tmp = new int[size];
@@ -74,6 +75,37 @@ void Symbol::print(ostream &os)
 	{
 		os << "string " << s_id << " = \"" << *((string*)s_data) <<"\"" << endl;
 	}
+	else if(s_type == INT_ARRAY)
+	{
+		for(int x = 0; x < s_size;x++)
+		{
+			os << "int " << s_id << "[" << x << "]" << " = "<< *((int*)s_data) << endl;
+			
+		}
+	}
+	else if(s_type == DOUBLE_ARRAY)
+	{
+		for(int x = 0; x < s_size;x++)
+		{
+			os << "double " << s_id << "[" << x << "]"  << " = "<< *((double*)s_data) << endl;
+			
+		}
+	}
+	else if(s_type == STRING_ARRAY)
+	{
+		for(int x = 0; x < s_size;x++)
+		{
+			os << "string " << s_id << "[" << x << "]"  << " = "<< *((string*)s_data) << endl;
+			
+		}
+	}
 }
+
+
+
+
+
+
+
 
 
