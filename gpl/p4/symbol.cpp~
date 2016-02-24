@@ -20,7 +20,7 @@ Symbol::Symbol(string name, double value)
 Symbol::Symbol(string name, string value)
 {
 	s_data = (void*)new string(value);
-	s_data = (void*)tmp;
+	//s_data = (void*)tmp;
 	s_type = STRING;
 	s_id = name;
 }
