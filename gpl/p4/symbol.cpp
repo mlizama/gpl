@@ -29,18 +29,18 @@ Symbol::Symbol(string name, Gpl_type type, int size)
 	s_type = type;
 	s_id = name;
 	
-	if(type = INT_ARRAY)
+	if(type == INT_ARRAY)
 	{
-		int *tmp = (void*)new int[size];
+		int *tmp = new int[size];
 		for(int x = 0; x<size; x++)
 		{
 			tmp[x] = 42;
 		}
 		s_data = (void*)tmp;
 	}
-	else if(type = DOUBLE_ARRAY)
+	else if(type == DOUBLE_ARRAY)
 	{
-		double *tmp = (void*)new double[size];
+		double *tmp = new double[size];
 		for(int x = 0; x<size; x++)
 		{
 			tmp[x] = 3.145;
@@ -49,7 +49,7 @@ Symbol::Symbol(string name, Gpl_type type, int size)
 	}
 	else
 	{
-		string *tmp = (void*)new string[size];
+		string *tmp = new string[size];
 		for(int x = 0; x<size; x++)
 		{
 			tmp[x] = "Hello world";

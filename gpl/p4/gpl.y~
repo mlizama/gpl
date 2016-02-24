@@ -133,7 +133,7 @@ int lines = 0;
 %token T_ERROR               "error"
 
 %type <union_gpl_type> simple_type
-//%type <union> optional_initializer
+%type <%union> optional_initializer
 
 %left T_OR;
 %left T_AND;
