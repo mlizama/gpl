@@ -10,9 +10,9 @@ class Symbol
 		Gpl_type s_type;
 		void *   s_data;
 
-	Symbol(string name, Gpl_type type, int value);
-	Symbol(string name, Gpl_type type, double value);
-        Symbol(string name, Gpl_type type, string value);
+	Symbol(string name, int value);
+	Symbol(string name, double value);
+        Symbol(string name, string value);
 
 	void print(ostream &os);
 

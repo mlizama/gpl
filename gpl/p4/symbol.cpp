@@ -1,25 +1,28 @@
 #include "symbol.h"
 
-Symbol::Symbol(string name, Gpl_type type, int value)
+Symbol::Symbol(string name, int value)
 {
 	int* tmp = new int;
 	*tmp = value;
 	s_data = (void*)tmp;
-	s_type = type;
+	s_type = INT;
 	s_id = name;
 
 }
-Symbol::Symbol(string name, Gpl_type type, double value)
+Symbol::Symbol(string name, double value)
 {
-	/*d_value = value;
-	g_type = type;
-	s_name = name;*/
+	double* tmp = new double;
+	*tmp = value;
+	s_data = (void*)tmp;
+	s_type = DOUBLE;
+	s_id = name;
 }
-Symbol::Symbol(string name, Gpl_type type, string value)
+Symbol::Symbol(string name, string value)
 {
-	/*s_value = value;
-	g_type  = type;
-	s_name = name;*/
+	s_data = (void*)new string(value);
+	//s_data = (void*)tmp;
+	s_type = STRING;
+	s_id = name;
 }
 
 void Symbol::print(ostream &os)
