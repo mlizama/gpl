@@ -11,7 +11,6 @@ extern int line_count;            // current line in the input; from record.l
 #include "symbol.h"
 #include <iostream>
 #include <string>
-#include "expression.h"
 using namespace std;
 
 int lines = 0;
