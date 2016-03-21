@@ -29,7 +29,7 @@
 #include "gpl_type.h"
 
 #include <string>
-
+#include "expression.h"
 #include "y.tab.h"
 
 #endif // #ifndef PARSER_H

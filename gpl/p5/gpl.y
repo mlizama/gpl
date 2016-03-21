@@ -25,6 +25,7 @@ int lines = 0;
  double         union_double;
  std::string    *union_string;
  Gpl_type	union_gpl_type;
+ Expression	*union_expression;
 }
 
 // turn on verbose (longer) error messages
@@ -134,6 +135,8 @@ int lines = 0;
 %token T_ERROR               "error"
 
 %type <union_gpl_type> simple_type
+%type <union_expression> expression
+%type <union_expression> primary_expression
 //%type <%union> optional_initializer
 
 %left T_OR;
@@ -420,35 +423,35 @@ variable:
 
 //---------------------------------------------------------------------
 expression:
-    primary_expression
-    | expression T_OR expression
-    | expression T_AND expression
-    | expression T_LESS_EQUAL expression
-    | expression T_GREATER_EQUAL  expression
-    | expression T_LESS expression 
-    | expression T_GREATER  expression
-    | expression T_EQUAL expression
-    | expression T_NOT_EQUAL expression
-    | expression T_PLUS expression 
-    | expression T_MINUS expression
-    | expression T_ASTERISK expression
-    | expression T_DIVIDE expression
-    | expression T_MOD expression
-    | T_MINUS  expression
-    | T_NOT  expression
-    | math_operator T_LPAREN expression T_RPAREN
-    | variable geometric_operator variable
+    primary_expression{}
+    | expression T_OR expression{}
+    | expression T_AND expression{}
+    | expression T_LESS_EQUAL expression{}
+    | expression T_GREATER_EQUAL  expression{}
+    | expression T_LESS expression {}
+    | expression T_GREATER  expression{}
+    | expression T_EQUAL expression{}
+    | expression T_NOT_EQUAL expression{}
+    | expression T_PLUS expression {}
+    | expression T_MINUS expression{}
+    | expression T_ASTERISK expression{}
+    | expression T_DIVIDE expression{}
+    | expression T_MOD expression{}
+    | T_MINUS  expression{}
+    | T_NOT  expression{}
+    | math_operator T_LPAREN expression T_RPAREN{}
+    | variable geometric_operator variable{}
     ;
 
 //---------------------------------------------------------------------
 primary_expression:
-    T_LPAREN  expression T_RPAREN
-    | variable
-    | T_INT_CONSTANT
-    | T_TRUE
-    | T_FALSE
-    | T_DOUBLE_CONSTANT
-    | T_STRING_CONSTANT
+    T_LPAREN  expression T_RPAREN{}
+    | variable{}
+    | T_INT_CONSTANT{}
+    | T_TRUE{}
+    | T_FALSE{}
+    | T_DOUBLE_CONSTANT{}
+    | T_STRING_CONSTANT{}
     ;
 
 //---------------------------------------------------------------------
