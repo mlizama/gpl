@@ -137,6 +137,7 @@ int lines = 0;
 %type <union_gpl_type> simple_type
 %type <union_expression> expression
 %type <union_expression> primary_expression
+%type <union_expression> optional_initializer
 //%type <%union> optional_initializer
 
 %left T_OR;
@@ -184,9 +185,23 @@ variable_declaration:
 
 	if($1 == INT)
 	{
-		Symbol *tmp = new Symbol(*$2,42);
+		int initial_value = 0;  // 0 is the default value for integers
+        	// if an initializer was specified
+        	if ($3 != NULL)
+        	{
+            		if ($3->get_type() != INT){
+               		//error -- the initializer is not of the correct type
+			}
+            		else initial_value = $3->eval_int();
+			
+        	}
+        	// now a new INT symbol can be created using initial_value and *$2.
+		Symbol *tmp = new Symbol(*$2,initial_value);
 		table->addSymbol(*$2,tmp);
-	}
+        }
+    // do other cases here (e.g. $1 == DOUBLE)
+		
+	
 	else if($1 == DOUBLE)
 	{
 		Symbol *tmp = new Symbol(*$2,3.14159);
@@ -239,8 +254,8 @@ simple_type:
 
 //---------------------------------------------------------------------
 optional_initializer:
-    T_ASSIGN expression
-    | empty
+    T_ASSIGN expression{$$ = $2;}
+    | empty{}
     ;
 
 //---------------------------------------------------------------------
@@ -423,7 +438,7 @@ variable:
 
 //---------------------------------------------------------------------
 expression:
-    primary_expression{}
+    primary_expression{$$ = $1;}
     | expression T_OR expression{}
     | expression T_AND expression{}
     | expression T_LESS_EQUAL expression{}
@@ -447,7 +462,7 @@ expression:
 primary_expression:
     T_LPAREN  expression T_RPAREN{}
     | variable{}
-    | T_INT_CONSTANT{}
+    | T_INT_CONSTANT{$$ = new Expression($1);}
     | T_TRUE{}
     | T_FALSE{}
     | T_DOUBLE_CONSTANT{}

@@ -29,6 +29,8 @@ class Expression
 	Expression(double d_value);
         Expression(string value);
 	Expression(Variable *variable);
+	int eval_int();
+	Gpl_type get_type();
 
 };
 #endif
