@@ -1,0 +1,9 @@
+#include "expression.h"
+
+Expression::Expression(int i_value ,Gpl_type type)
+{
+	int_value = i_value;
+	leftxp = NULL;
+	rightxp = NULL;
+
+}

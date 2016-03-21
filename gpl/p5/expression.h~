@@ -14,7 +14,6 @@ class Expression
 	Tree_kinds m_kind;
 	Expression *leftxp;
 	Expression *rightxp;
-	Variable *m_variable;
 	Gpl_type m_type;
 	Operator_type o_type;
 	int int_value;
@@ -25,9 +24,9 @@ class Expression
 	public:
 	Expression(Expression *left, Operator_type type, Expression *right);
 	Expression(Expression *exp, Operator_type type);
-        Expression(int i_value);
-	Expression(double d_value);
-        Expression(string value);
+        Expression(int i_value ,Gpl_type type);
+	Expression(double d_value, Gpl_type type);
+        Expression(string value, Gpl_type type);
 	Expression(Variable *variable);
 
 };
