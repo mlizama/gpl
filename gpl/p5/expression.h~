@@ -30,6 +30,7 @@ class Expression
         Expression(string value);
 	Expression(Variable *variable);
 	int eval_int();
+	Gpl_type get_type();
 
 };
 #endif

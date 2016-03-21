@@ -199,17 +199,34 @@ variable_declaration:
 		Symbol *tmp = new Symbol(*$2,initial_value);
 		table->addSymbol(*$2,tmp);
         }
-    // do other cases here (e.g. $1 == DOUBLE)
-		
-	
 	else if($1 == DOUBLE)
 	{
-		Symbol *tmp = new Symbol(*$2,3.14159);
+		double initial_value = 0.0;  // 0 is the default value for integers
+        	// if an initializer was specified
+        	if ($3 != NULL)
+        	{
+            		if ($3->get_type() != DOUBLE){
+               		//error -- the initializer is not of the correct type
+			}
+            		else initial_value = $3->eval_double();
+			
+        	}
+		Symbol *tmp = new Symbol(*$2,initial_value);
 		table->addSymbol(*$2,tmp);
 	}
 	else if($1 == STRING)
-	{
-		Symbol *tmp = new Symbol(*$2,"Hello world");
+	{	
+		string initial_value = "";  // 0 is the default value for integers
+        	// if an initializer was specified
+        	if ($3 != NULL)
+        	{
+            		if ($3->get_type() != STRING){
+               		//error -- the initializer is not of the correct type
+			}
+            		else initial_value = $3->eval_string();
+			
+        	}
+		Symbol *tmp = new Symbol(*$2,initial_value);
 		table->addSymbol(*$2,tmp);
 	}
     }
@@ -465,8 +482,8 @@ primary_expression:
     | T_INT_CONSTANT{$$ = new Expression($1);}
     | T_TRUE{}
     | T_FALSE{}
-    | T_DOUBLE_CONSTANT{}
-    | T_STRING_CONSTANT{}
+    | T_DOUBLE_CONSTANT{$$ = new Expression($1);}
+    | T_STRING_CONSTANT{$$ = new Expression(*$1);}
     ;
 
 //---------------------------------------------------------------------

@@ -27,9 +27,11 @@ class Expression
 	Expression(Expression *exp, Operator_type type);
         Expression(int i_value);
 	Expression(double d_value);
-        Expression(string value);
+        Expression(string s_value);
 	Expression(Variable *variable);
 	int eval_int();
+	double eval_double();
+	string eval_string();
 	Gpl_type get_type();
 
 };
