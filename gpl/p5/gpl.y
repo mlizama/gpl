@@ -480,8 +480,8 @@ primary_expression:
     T_LPAREN  expression T_RPAREN{}
     | variable{}
     | T_INT_CONSTANT{$$ = new Expression($1);}
-    | T_TRUE{}
-    | T_FALSE{}
+    | T_TRUE{$$ = new Expression(1);}
+    | T_FALSE{$$ = new Expression(0);}
     | T_DOUBLE_CONSTANT{$$ = new Expression($1);}
     | T_STRING_CONSTANT{$$ = new Expression(*$1);}
     ;

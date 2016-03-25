@@ -213,7 +213,7 @@ variable_declaration:
         	}
 		Symbol *tmp = new Symbol(*$2,initial_value);
 		table->addSymbol(*$2,tmp);
-	}/*
+	}
 	else if($1 == STRING)
 	{	
 		string initial_value = "";  // 0 is the default value for integers
@@ -228,7 +228,7 @@ variable_declaration:
         	}
 		Symbol *tmp = new Symbol(*$2,initial_value);
 		table->addSymbol(*$2,tmp);
-	}*/
+	}
     }
     | simple_type  T_ID  T_LBRACKET T_INT_CONSTANT T_RBRACKET
     {
