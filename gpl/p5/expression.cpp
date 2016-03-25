@@ -79,10 +79,30 @@ int Expression::eval_int()
 	{
 		return int_value;
 	}
+	else if(o_type == MULTIPLY)
+	{
+		if(leftxp->get_type() == DOUBLE || rightxp->get_type() == DOUBLE)
+		{
+			return leftxp->eval_double() * rightxp->eval_double();
+		}
+		if(leftxp->get_type() == INT || rightxp->get_type() == INT)
+		{
+			return leftxp->eval_int() * rightxp->eval_int();
+		}
+		if(leftxp->get_type() == INT || rightxp->get_type() == DOUBLE)
+		{
+			return leftxp->eval_int() * rightxp->eval_double();
+		}
+		if(leftxp->get_type() == DOUBLE || rightxp->get_type() == INT)
+		{
+			return leftxp->eval_double() * rightxp->eval_int();
+		}
+	}
 	else
 	{	
 		return 0;
 	}
+	//
 	return 0;
 }
 double Expression::eval_double()

@@ -27,13 +27,12 @@ Expression::Expression(Expression *left, Operator_type type, Expression *right)
 	if(o_type == LESS_THAN || o_type == LESS_THAN_EQUAL || o_type == GREATER_THAN || o_type == GREATER_THAN_EQUAL ||
 	   o_type == AND || o_type == OR || o_type == EQUAL || o_type == NOT_EQUAL)
 	{
-		m_type == INT;
-		(Gpl_type)m_type;
+		m_type = INT;
 	}
 	//if either left or right are strings then the expression evals to string covers arithmetic operators
 	else if(left->get_type() == STRING || left->get_type() == STRING)
 	{
-		m_type == STRING;
+		m_type = STRING;
 	}
 	//if either left or right are doubles then we know the result is double, strings take 
 	else if(left->get_type() == DOUBLE || right->get_type() == DOUBLE)
@@ -43,7 +42,7 @@ Expression::Expression(Expression *left, Operator_type type, Expression *right)
 	//both left and right are int so result must be int
 	else if(left->get_type() == INT || right->get_type() == INT)
 	{
-		m_type == INT;
+		m_type = INT;
 	}
 
 }
@@ -80,10 +79,30 @@ int Expression::eval_int()
 	{
 		return int_value;
 	}
+	else if(o_type == MULTIPLY)
+	{
+		if(leftxp->get_type() == DOUBLE || rightxp->get_type() == DOUBLE)
+		{
+			return leftxp->eval_double() * rightxp->eval_double;
+		}
+		if(leftxp->get_type() == INT || rightxp->get_type() == INT)
+		{
+			return leftxp->eval_int() * rightxp->eval_int;
+		}
+		if(leftxp->get_type() == INT || rightxp->get_type() == DOUBLE)
+		{
+			return leftxp->eval_int() * rightxp->eval_double;
+		}
+		if(leftxp->get_type() == DOUBLE || rightxp->get_type() == INT)
+		{
+			return leftxp->eval_double() * rightxp->eval_int;
+		}
+	}
 	else
 	{	
 		return 0;
 	}
+	//
 	return 0;
 }
 double Expression::eval_double()
