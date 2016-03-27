@@ -456,18 +456,18 @@ variable:
 //---------------------------------------------------------------------
 expression:
     primary_expression{$$ = $1;}
-    | expression T_OR expression{}
-    | expression T_AND expression{}
+    | expression T_OR expression{$$ = new Expression($1,OR,$3);}
+    | expression T_AND expression{$$ = new Expression($1,AND,$3);}
     | expression T_LESS_EQUAL expression{}
     | expression T_GREATER_EQUAL  expression{}
     | expression T_LESS expression {}
     | expression T_GREATER  expression{}
     | expression T_EQUAL expression{}
     | expression T_NOT_EQUAL expression{}
-    | expression T_PLUS expression {}
-    | expression T_MINUS expression{}
-    | expression T_ASTERISK expression{}
-    | expression T_DIVIDE expression{}
+    | expression T_PLUS expression {$$ = new Expression($1,PLUS,$3);}
+    | expression T_MINUS expression{$$ = new Expression($1,MINUS,$3);}
+    | expression T_ASTERISK expression{$$ = new Expression($1,MULTIPLY,$3);}
+    | expression T_DIVIDE expression{$$ = new Expression($1,DIVIDE,$3);}
     | expression T_MOD expression{}
     | T_MINUS  expression{}
     | T_NOT  expression{}

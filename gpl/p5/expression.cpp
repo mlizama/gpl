@@ -98,6 +98,101 @@ int Expression::eval_int()
 			return leftxp->eval_double() * rightxp->eval_int();
 		}
 	}
+	else if(o_type == DIVIDE)
+	{
+		if(leftxp->get_type() == DOUBLE || rightxp->get_type() == DOUBLE)
+		{
+			return leftxp->eval_double() / rightxp->eval_double();
+		}
+		if(leftxp->get_type() == INT || rightxp->get_type() == INT)
+		{
+			return leftxp->eval_int() / rightxp->eval_int();
+		}
+		if(leftxp->get_type() == INT || rightxp->get_type() == DOUBLE)
+		{
+			return leftxp->eval_int() / rightxp->eval_double();
+		}
+		if(leftxp->get_type() == DOUBLE || rightxp->get_type() == INT)
+		{
+			return leftxp->eval_double() / rightxp->eval_int();
+		}
+	}
+	else if(o_type == MINUS)
+	{
+		if(leftxp->get_type() == DOUBLE || rightxp->get_type() == DOUBLE)
+		{
+			return leftxp->eval_double() / rightxp->eval_double();
+		}
+		if(leftxp->get_type() == INT || rightxp->get_type() == INT)
+		{
+			return leftxp->eval_int() / rightxp->eval_int();
+		}
+		if(leftxp->get_type() == INT || rightxp->get_type() == DOUBLE)
+		{
+			return leftxp->eval_int() / rightxp->eval_double();
+		}
+		if(leftxp->get_type() == DOUBLE || rightxp->get_type() == INT)
+		{
+			return leftxp->eval_double() / rightxp->eval_int();
+		}
+	}
+	else if(o_type == PLUS)
+	{
+		if(leftxp->get_type() == DOUBLE || rightxp->get_type() == DOUBLE)
+		{
+			return leftxp->eval_double() + rightxp->eval_double();
+		}
+		if(leftxp->get_type() == INT || rightxp->get_type() == INT)
+		{
+			return leftxp->eval_int() + rightxp->eval_int();
+		}
+		if(leftxp->get_type() == INT || rightxp->get_type() == DOUBLE)
+		{
+			return leftxp->eval_int() + rightxp->eval_double();
+		}
+		if(leftxp->get_type() == DOUBLE || rightxp->get_type() == INT)
+		{
+			return leftxp->eval_double() + rightxp->eval_int();
+		}
+	}
+	else if(o_type == OR)
+	{
+		if(leftxp->get_type() == DOUBLE || rightxp->get_type() == DOUBLE)
+		{
+			return leftxp->eval_double() || rightxp->eval_double();
+		}
+		if(leftxp->get_type() == INT || rightxp->get_type() == INT)
+		{
+			return leftxp->eval_int() || rightxp->eval_int();
+		}
+		if(leftxp->get_type() == INT || rightxp->get_type() == DOUBLE)
+		{
+			return leftxp->eval_int() || rightxp->eval_double();
+		}
+		if(leftxp->get_type() == DOUBLE || rightxp->get_type() == INT)
+		{
+			return leftxp->eval_double() || rightxp->eval_int();
+		}
+	}
+	else if(o_type == AND)
+	{
+		if(leftxp->get_type() == DOUBLE || rightxp->get_type() == DOUBLE)
+		{
+			return leftxp->eval_double() && rightxp->eval_double();
+		}
+		if(leftxp->get_type() == INT || rightxp->get_type() == INT)
+		{
+			return leftxp->eval_int() && rightxp->eval_int();
+		}
+		if(leftxp->get_type() == INT || rightxp->get_type() == DOUBLE)
+		{
+			return leftxp->eval_int() && rightxp->eval_double();
+		}
+		if(leftxp->get_type() == DOUBLE || rightxp->get_type() == INT)
+		{
+			return leftxp->eval_double() && rightxp->eval_int();
+		}
+	}
 	else
 	{	
 		return 0;
