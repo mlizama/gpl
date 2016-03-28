@@ -12,6 +12,7 @@ extern int line_count;            // current line in the input; from record.l
 #include <iostream>
 #include <string>
 #include "expression.h"
+#include <sstream>
 #include <assert.h>     /* assert */
 using namespace std;
 
@@ -212,6 +213,10 @@ variable_declaration:
         	if ($3 != NULL)
         	{
             		if ($3->get_type() != DOUBLE){
+				if($3->get_type() == INT)
+				{
+					initial_value = $3->eval_int();
+				}
                		//error -- the initializer is not of the correct type
 			}
             		else initial_value = $3->eval_double();
@@ -224,10 +229,21 @@ variable_declaration:
 	{	
 		string initial_value = "";  // 0 is the default value for integers
         	// if an initializer was specified
+		std::stringstream ss;
         	if ($3 != NULL)
         	{
             		if ($3->get_type() != STRING){
-               		//error -- the initializer is not of the correct type
+				if($3->get_type() == INT)
+				{
+					ss << $3->eval_int();
+					initial_value = ss.str();
+				}
+				else if($3->get_type() == DOUBLE)
+				{
+					ss << $3->eval_double();
+					initial_value = ss.str();
+				}
+	               		//error -- the initializer is not of the correct type
 			}
             		else initial_value = $3->eval_string();
 			

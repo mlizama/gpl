@@ -51,7 +51,7 @@ Expression::Expression(Expression *exp, Operator_type type)
 	{
 		m_type = INT;
 	}
-	else if(o_type == MINUS || o_type == ABS)
+	else if(o_type == UNARY_MINUS || o_type == ABS)
 	{
 		m_type = exp->get_type();	
 	}
@@ -256,6 +256,34 @@ int Expression::eval_int()
 			}
 		
 		}
+		else if(o_type == FLOOR)
+		{
+
+			if(rightxp->get_type() == INT)
+				return floor(rightxp->eval_int());
+			else if (rightxp->get_type() == DOUBLE)
+				return floor(rightxp->eval_double());
+			else return 0;		
+		}
+		else if(o_type == ABS)
+		{
+
+			if(rightxp->get_type() == INT)
+				return abs(rightxp->eval_int());
+			else if (rightxp->get_type() == DOUBLE)
+				return abs(rightxp->eval_double());
+			else return 0.0;		
+		}
+		else if(o_type == RANDOM)
+		{
+
+			if(rightxp->get_type() == INT)
+				return rand(rightxp->eval_int());
+			else if (rightxp->get_type() == DOUBLE)
+				return rand(rightxp->eval_double());
+			else return 0.0;		
+		}
+		
 		else if(o_type == UNARY_MINUS)
 		{
 		//can only mod ints
@@ -307,6 +335,25 @@ double Expression::eval_double()
 				return leftxp->eval_double() + rightxp->eval_int();
 			}
 		}
+		else if(o_type == MINUS)
+		{
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_double() - rightxp->eval_double();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_int() - rightxp->eval_int();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_int() - rightxp->eval_double();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_double() - rightxp->eval_int();
+			}
+		}
 		else if(o_type == MULTIPLY)
 		{	
 			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
@@ -326,6 +373,19 @@ double Expression::eval_double()
 				return leftxp->eval_double() * rightxp->eval_int();
 			}
 			return 0.0;
+		}
+		else if(o_type == UNARY_MINUS)
+		{
+		//can only mod ints
+			if(rightxp->get_type() == INT)
+			{
+				return rightxp->eval_int() * -1;
+			}
+			else if(rightxp->get_type() == DOUBLE)
+			{
+				return rightxp->eval_double();
+			}
+		
 		}
 		else if(o_type == COS)
 		{
@@ -359,54 +419,64 @@ double Expression::eval_double()
 		{
 
 			if(rightxp->get_type() == INT)
-				return acos(rightxp->eval_int()*M_PI/180);
+				return acos(rightxp->eval_int())*(180/M_PI);
 			else if (rightxp->get_type() == DOUBLE)
-				return acos(rightxp->eval_double()*M_PI/180);
+				return acos(rightxp->eval_double())*(180/M_PI);
 			else return 0.0;		
 		}
 		else if(o_type == ASIN)
 		{
 
 			if(rightxp->get_type() == INT)
-				return asin(rightxp->eval_int()*M_PI/180);
+				return asin(rightxp->eval_int())*(180/M_PI);
 			else if (rightxp->get_type() == DOUBLE)
-				return asin(rightxp->eval_double()*M_PI/180);
+				return asin(rightxp->eval_double())*(180/M_PI);
 			else return 0.0;		
 		}
 		else if(o_type == ATAN)
 		{
-
 			if(rightxp->get_type() == INT)
-				return atan(rightxp->eval_int()*M_PI/180);
+				return atan(rightxp->eval_int())*(180/M_PI);
 			else if (rightxp->get_type() == DOUBLE)
-				return atan(rightxp->eval_double()*M_PI/180);
+				return atan(rightxp->eval_double())*(180/M_PI);
 			else return 0.0;		
 		}
 		else if(o_type == SQRT)
 		{
-
 			if(rightxp->get_type() == INT)
-				return sqrt(rightxp->eval_int()*M_PI/180);
+				return sqrt(rightxp->eval_int());
 			else if (rightxp->get_type() == DOUBLE)
-				return sqrt(rightxp->eval_double()*M_PI/180);
+				return sqrt(rightxp->eval_double());
 			else return 0.0;		
 		}
-		else if(o_type == FLOOR)
+		else if(o_type == RANDOM)
 		{
 
 			if(rightxp->get_type() == INT)
-				return floor(rightxp->eval_int()*M_PI/180);
+				return rand() % rightxp->eval_int();
 			else if (rightxp->get_type() == DOUBLE)
-				return floor(rightxp->eval_double()*M_PI/180);
+			{
+				int tim = floor(rightxp->eval_double());
+				return rand() % tim;
+			}
 			else return 0.0;		
 		}
+		/*else if(o_type == FLOOR)
+		{
+
+			if(rightxp->get_type() == INT)
+				return floor(rightxp->eval_int());
+			else if (rightxp->get_type() == DOUBLE)
+				return floor(rightxp->eval_double());
+			else return 0;		
+		}*/
 		else if(o_type == ABS)
 		{
 
 			if(rightxp->get_type() == INT)
-				return abs(rightxp->eval_int()*M_PI/180);
+				return abs(rightxp->eval_int());
 			else if (rightxp->get_type() == DOUBLE)
-				return abs(rightxp->eval_double()*M_PI/180);
+				return abs(rightxp->eval_double());
 			else return 0.0;		
 		}
 	else return 0.0;
