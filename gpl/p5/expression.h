@@ -8,12 +8,12 @@
 using namespace std;
 
 class Variable;
-
+enum Tree_kinds {EXPRESSION, CONSTANT, VARIABLE};
 class Expression
 {
 	private:
-	enum Tree_kinds {EXPRESSION, CONSTANT, VARIABLE};
-	Tree_kinds m_kind;
+
+
 	Expression *leftxp;
 	Expression *rightxp;
 	Variable *m_variable;
@@ -24,7 +24,7 @@ class Expression
 	double dbl_value;
 	
 
-	public:
+	public:	Tree_kinds m_kind;
 	Expression(Expression *left, Operator_type type, Expression *right);
 	Expression(Expression *exp, Operator_type type);
         Expression(int i_value);

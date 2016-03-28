@@ -20,7 +20,8 @@ Symbol::Symbol(string name, double value)
 }
 Symbol::Symbol(string name, string value)
 {
-	s_data = (void*)new string(value);
+	
+	s_data = (void*)new string(value.substr(1,value.size()-2));
 	s_type = STRING;
 	s_id = name;
         m_base = STRING;
@@ -78,7 +79,7 @@ void Symbol::print(ostream &os)
 	}
 	else if(s_type == STRING)
 	{
-		os << "string " << s_id << " = \"" << *((string*)s_data) <<"\"" << endl;
+		os << "string " << s_id << " = \"" << *((string*)s_data) << "\""<< endl;
 	}
 	else if(s_type == INT_ARRAY)
 	{
@@ -118,15 +119,15 @@ string Symbol::get_string_value() const
 {
 	return *((string*)s_data);
 }
-int get_int_value(int index) const
+int Symbol::get_int_value(int index) const
 {
-	return *((int*)s_data);//come back to this!!
+	return 0;//come back to this!!
 }
-double get_double_value(int index) const
+double Symbol::get_double_value(int index) const
 {
 	return 0.0;//and this!!
 }
-string get_string_value(int index) const
+string Symbol::get_string_value(int index) const
 {	
 	return " ";//also this!!!
 }

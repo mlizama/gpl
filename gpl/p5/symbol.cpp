@@ -20,6 +20,7 @@ Symbol::Symbol(string name, double value)
 }
 Symbol::Symbol(string name, string value)
 {
+	
 	s_data = (void*)new string(value);
 	s_type = STRING;
 	s_id = name;
@@ -78,7 +79,7 @@ void Symbol::print(ostream &os)
 	}
 	else if(s_type == STRING)
 	{
-		os << "string " << s_id << " = \"" << *((string*)s_data) <<"\"" << endl;
+		os << "string " << s_id << " = \"" << *((string*)s_data) << "\""<< endl;
 	}
 	else if(s_type == INT_ARRAY)
 	{

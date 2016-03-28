@@ -12,6 +12,7 @@ extern int line_count;            // current line in the input; from record.l
 #include <iostream>
 #include <string>
 #include "expression.h"
+#include <assert.h>     /* assert */
 using namespace std;
 
 int lines = 0;
@@ -191,13 +192,14 @@ variable_declaration:
         	// if an initializer was specified
         	if ($3 != NULL)
         	{
+	
             		if ($3->get_type() != INT){
                		//error -- the initializer is not of the correct type
 			}
             		else initial_value = $3->eval_int();
 			
         	}
-        	// now a new INT symbol can be created using initial_value and *$2.
+		// now a new INT symbol can be created using initial_value and *$2.
 		Symbol *tmp = new Symbol(*$2,initial_value);
 		table->addSymbol(*$2,tmp);
         }
@@ -307,6 +309,7 @@ parameter_list :
 //---------------------------------------------------------------------
 parameter:
     T_ID T_ASSIGN expression
+	{}
     ;
 
 //---------------------------------------------------------------------
@@ -443,6 +446,9 @@ exit_statement:
 //---------------------------------------------------------------------
 assign_statement:
     variable T_ASSIGN expression
+    {
+	
+    }
     | variable T_PLUS_ASSIGN expression
     | variable T_MINUS_ASSIGN expression
     ;
@@ -452,14 +458,24 @@ variable:
     T_ID
     {
 	Symbol_table *table = Symbol_table::instance();
-	if(table->find(*$1))
+	if(table->find(*$1) == NULL)
 	{
-		$$ = new Variable(table->find(*$1));
+		
+		//Symbol *tmp = new Symbol("a",111);
+		//table->addSymbol("b",tmp);
+		//$$ = new Variable((table->find($1))->second));
 	}
 	else
 	{
+		assert(table->find(*$1) != NULL);
+		$$ = new Variable(table->find(*$1));
+		//$$ = new Variable();
+		//Symbol *tmp = new Symbol("d",111);
+		//table->addSymbol("d",tmp);
+		//$$ = new Variable(tmp);
 		//throw not declared error
 	}
+
     }
     | T_ID T_LBRACKET expression T_RBRACKET{}
     | T_ID T_PERIOD T_ID{}

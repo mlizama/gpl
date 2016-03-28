@@ -4,14 +4,15 @@
 #include "expression.h"
 #include "gpl_type.h"
 #include <iostream>
-#include "variable.h"
-using namespace std;
-class Variable;
 
+using namespace std;
+
+class Variable;
+enum Tree_kinds {EXPRESSION, CONSTANT, VARIABLE};
 class Expression
 {
 	private:
-	enum Tree_kinds {EXPRESSION, CONSTANT, VARIABLE};
+
 	Tree_kinds m_kind;
 	Expression *leftxp;
 	Expression *rightxp;
