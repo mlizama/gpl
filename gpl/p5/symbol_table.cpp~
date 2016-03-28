@@ -44,7 +44,7 @@ Symbol* Symbol_table::find(string symbol)
 {
 	if(symbol_map.find(symbol) == symbol_map.end())
 	{
-		return NULL;
+		return false;
 	}
 	else// if the symbol is in the symbol table already then throw error
 	{

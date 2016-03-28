@@ -4,8 +4,10 @@
 #include "expression.h"
 #include "gpl_type.h"
 #include <iostream>
-#include "variable.h"
+
 using namespace std;
+
+class Variable;
 
 class Expression
 {

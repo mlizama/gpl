@@ -26,6 +26,7 @@ int lines = 0;
  std::string    *union_string;
  Gpl_type	union_gpl_type;
  Expression	*union_expression;
+ Variable	*union_variable;
 }
 
 // turn on verbose (longer) error messages
@@ -138,6 +139,7 @@ int lines = 0;
 %type <union_expression> expression
 %type <union_expression> primary_expression
 %type <union_expression> optional_initializer
+%type <union_variable> variable
 //%type <%union> optional_initializer
 
 %left T_OR;
@@ -448,9 +450,20 @@ assign_statement:
 //---------------------------------------------------------------------
 variable:
     T_ID
-    | T_ID T_LBRACKET expression T_RBRACKET
-    | T_ID T_PERIOD T_ID
-    | T_ID T_LBRACKET expression T_RBRACKET T_PERIOD T_ID
+    {
+	Symbol_table *table = Symbol_table::instance();
+	if(table->find(*$1))
+	{
+		$$ = new Variable(table->find(*$1));
+	}
+	else
+	{
+		//throw not declared error
+	}
+    }
+    | T_ID T_LBRACKET expression T_RBRACKET{}
+    | T_ID T_PERIOD T_ID{}
+    | T_ID T_LBRACKET expression T_RBRACKET T_PERIOD T_ID{}
     ;
 
 //---------------------------------------------------------------------
@@ -468,8 +481,8 @@ expression:
     | expression T_MINUS expression{$$ = new Expression($1,MINUS,$3);}
     | expression T_ASTERISK expression{$$ = new Expression($1,MULTIPLY,$3);}
     | expression T_DIVIDE expression{$$ = new Expression($1,DIVIDE,$3);}
-    | expression T_MOD expression{}
-    | T_MINUS  expression{}
+    | expression T_MOD expression{$$ = new Expression($1,MOD,$3);}
+    | T_MINUS  expression{$$ = new Expression($2,UNARY_MINUS);}
     | T_NOT  expression{}
     | math_operator T_LPAREN expression T_RPAREN{}
     | variable geometric_operator variable{}
@@ -478,7 +491,7 @@ expression:
 //---------------------------------------------------------------------
 primary_expression:
     T_LPAREN  expression T_RPAREN{}
-    | variable{}
+    | variable{$$ = new Expression($1);}
     | T_INT_CONSTANT{$$ = new Expression($1);}
     | T_TRUE{$$ = new Expression(1);}
     | T_FALSE{$$ = new Expression(0);}

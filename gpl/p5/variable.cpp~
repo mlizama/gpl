@@ -27,7 +27,6 @@ int Variable::get_int_value()
 	else//only called when this is an expression int x = a[5 + y]
 	{
 		//
-		return 0;
 	}
 }
 double Variable::get_double_value()
