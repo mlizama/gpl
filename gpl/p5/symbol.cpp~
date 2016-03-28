@@ -21,7 +21,7 @@ Symbol::Symbol(string name, double value)
 Symbol::Symbol(string name, string value)
 {
 	
-	s_data = (void*)new string(value.substr(1,value.size()-2));
+	s_data = (void*)new string(value);
 	s_type = STRING;
 	s_id = name;
         m_base = STRING;
@@ -121,6 +121,7 @@ string Symbol::get_string_value() const
 }
 int Symbol::get_int_value(int index) const
 {
+
 	return 0;//come back to this!!
 }
 double Symbol::get_double_value(int index) const

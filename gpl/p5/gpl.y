@@ -28,6 +28,7 @@ int lines = 0;
  Gpl_type	union_gpl_type;
  Expression	*union_expression;
  Variable	*union_variable;
+ Operator_type   union_operator;
 }
 
 // turn on verbose (longer) error messages
@@ -140,6 +141,7 @@ int lines = 0;
 %type <union_expression> expression
 %type <union_expression> primary_expression
 %type <union_expression> optional_initializer
+%type <union_operator> math_operator
 %type <union_variable> variable
 //%type <%union> optional_initializer
 
@@ -276,7 +278,7 @@ simple_type:
 //---------------------------------------------------------------------
 optional_initializer:
     T_ASSIGN expression{$$ = $2;}
-    | empty{}
+    | empty{$$ = NULL;}
     ;
 
 //---------------------------------------------------------------------
@@ -500,13 +502,14 @@ expression:
     | expression T_MOD expression{$$ = new Expression($1,MOD,$3);}
     | T_MINUS  expression{$$ = new Expression($2,UNARY_MINUS);}
     | T_NOT  expression{}
-    | math_operator T_LPAREN expression T_RPAREN{}
+    | math_operator T_LPAREN expression T_RPAREN{$$ = new Expression($3,$1);
+}
     | variable geometric_operator variable{}
     ;
 
 //---------------------------------------------------------------------
 primary_expression:
-    T_LPAREN  expression T_RPAREN{}
+    T_LPAREN  expression T_RPAREN{$$ = $2;}
     | variable{$$ = new Expression($1);}
     | T_INT_CONSTANT{$$ = new Expression($1);}
     | T_TRUE{$$ = new Expression(1);}
@@ -523,16 +526,16 @@ geometric_operator:
 
 //---------------------------------------------------------------------
 math_operator:
-    T_SIN
-    | T_COS
-    | T_TAN
-    | T_ASIN
-    | T_ACOS
-    | T_ATAN
-    | T_SQRT
-    | T_ABS
-    | T_FLOOR
-    | T_RANDOM
+    T_SIN{$$ = SIN;}
+    | T_COS{$$ = COS;}
+    | T_TAN{$$ = TAN;}
+    | T_ASIN{$$ = ASIN;}
+    | T_ACOS{$$ = ACOS;}
+    | T_ATAN{$$ = ATAN;}
+    | T_SQRT{$$ = SQRT;}
+    | T_ABS{$$ = ABS;}
+    | T_FLOOR{$$ = FLOOR;}
+    | T_RANDOM{$$ = RANDOM;}
     ;
 
 //---------------------------------------------------------------------

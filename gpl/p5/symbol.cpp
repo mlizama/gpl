@@ -121,6 +121,7 @@ string Symbol::get_string_value() const
 }
 int Symbol::get_int_value(int index) const
 {
+
 	return 0;//come back to this!!
 }
 double Symbol::get_double_value(int index) const
@@ -129,7 +130,7 @@ double Symbol::get_double_value(int index) const
 }
 string Symbol::get_string_value(int index) const
 {	
-	return " ";//also this!!!
+	return "";//also this!!!
 }
 Gpl_type Symbol::get_base_type()
 {

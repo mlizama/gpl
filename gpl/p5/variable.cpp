@@ -34,6 +34,7 @@ int Variable::get_int_value()
 		//
 		return 9;
 	}
+	return 0;
 }
 double Variable::get_double_value()
 {
@@ -47,7 +48,9 @@ string Variable::get_string_value()
 {
 	if(sym)
 	{
+	
 		return sym->get_string_value();
+
 	}
 	else return "";
 }
