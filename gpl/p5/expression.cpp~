@@ -170,6 +170,147 @@ int Expression::eval_int()
 				return leftxp->eval_double() / rightxp->eval_int();
 			}
 		}
+		else if(o_type == LESS_THAN)
+		{
+			
+			std::stringstream stream;
+			if(leftxp->get_type() == STRING && rightxp->get_type() == STRING)
+			{
+				return leftxp->eval_string() < rightxp->eval_string();
+			}
+			if(leftxp->get_type() == STRING && rightxp->get_type() == INT)
+			{
+				stream << rightxp->eval_int();
+				return leftxp->eval_string() < stream.str();
+			}
+			if(leftxp->get_type() == STRING && rightxp->get_type() == DOUBLE)
+			{
+				stream << rightxp->eval_double();
+
+				return leftxp->eval_string() < stream.str();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == STRING)
+			{
+				stream << leftxp->eval_int();
+				return stream.str() < rightxp->eval_string();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == STRING)
+			{
+				stream << leftxp->eval_double();
+				return stream.str() < rightxp->eval_string();
+			}
+			//----------------------------------------------------------------------
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_double() < rightxp->eval_double();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_int() < rightxp->eval_int();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_int() < rightxp->eval_double();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_double() < rightxp->eval_int();
+			}
+		}
+		else if(o_type == LESS_THAN_EQUAL)
+		{
+			
+			std::stringstream stream;
+			if(leftxp->get_type() == STRING && rightxp->get_type() == STRING)
+			{
+				return leftxp->eval_string() <= rightxp->eval_string();
+			}
+			if(leftxp->get_type() == STRING && rightxp->get_type() == INT)
+			{
+				stream << rightxp->eval_int();
+				return leftxp->eval_string() <= stream.str();
+			}
+			if(leftxp->get_type() == STRING && rightxp->get_type() == DOUBLE)
+			{
+				stream << rightxp->eval_double();
+
+				return leftxp->eval_string() <= stream.str();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == STRING)
+			{
+				stream << leftxp->eval_int();
+				return stream.str() <= rightxp->eval_string();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == STRING)
+			{
+				stream << leftxp->eval_double();
+				return stream.str() <= rightxp->eval_string();
+			}
+			//----------------------------------------------------------------------
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_double() <= rightxp->eval_double();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_int() <= rightxp->eval_int();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_int() <= rightxp->eval_double();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_double() <= rightxp->eval_int();
+			}
+		}
+		else if(o_type == GREATER_THAN)
+		{
+			
+			std::stringstream stream;
+			if(leftxp->get_type() == STRING && rightxp->get_type() == STRING)
+			{
+				return leftxp->eval_string() > rightxp->eval_string();
+			}
+			if(leftxp->get_type() == STRING && rightxp->get_type() == INT)
+			{
+				stream << rightxp->eval_int();
+				return leftxp->eval_string() > stream.str();
+			}
+			if(leftxp->get_type() == STRING && rightxp->get_type() == DOUBLE)
+			{
+				stream << rightxp->eval_double();
+
+				return leftxp->eval_string() > stream.str();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == STRING)
+			{
+				stream << leftxp->eval_int();
+				return stream.str() > rightxp->eval_string();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == STRING)
+			{
+				stream << leftxp->eval_double();
+				return stream.str() > rightxp->eval_string();
+			}
+			//----------------------------------------------------------------------
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_double() > rightxp->eval_double();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_int() > rightxp->eval_int();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_int() > rightxp->eval_double();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_double() > rightxp->eval_int();
+			}
+		}
 		else if(o_type == PLUS)
 		{
 			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
@@ -278,12 +419,14 @@ int Expression::eval_int()
 		{
 
 			if(rightxp->get_type() == INT)
-				return rand(rightxp->eval_int());
+				return rand() % rightxp->eval_int();
 			else if (rightxp->get_type() == DOUBLE)
-				return rand(rightxp->eval_double());
+			{
+				int tim = floor(rightxp->eval_double());
+				return rand() % tim;
+			}
 			else return 0.0;		
 		}
-		
 		else if(o_type == UNARY_MINUS)
 		{
 		//can only mod ints
@@ -297,6 +440,68 @@ int Expression::eval_int()
 			}
 		
 		}
+		else if(o_type == NOT)
+		{
+		//can only mod ints
+			if(rightxp->get_type() == INT)
+			{
+				return !rightxp->eval_int();
+			}
+			else if(rightxp->get_type() == DOUBLE)
+			{
+				return !rightxp->eval_double();
+			}
+		
+		}
+		else if(o_type == EQUAL)
+		{
+			std::stringstream stream;
+			if(leftxp->get_type() == STRING && rightxp->get_type() == STRING)
+			{
+				return leftxp->eval_string() == rightxp->eval_string();
+			}
+			if(leftxp->get_type() == STRING && rightxp->get_type() == INT)
+			{
+				stream << rightxp->eval_int();
+				return leftxp->eval_string() == stream.str();
+			}
+			if(leftxp->get_type() == STRING && rightxp->get_type() == DOUBLE)
+			{
+				stream << rightxp->eval_double();
+
+				return leftxp->eval_string() == stream.str();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == STRING)
+			{
+				stream << leftxp->eval_int();
+				return stream.str() == rightxp->eval_string();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == STRING)
+			{
+				stream << leftxp->eval_double();
+				return stream.str() == rightxp->eval_string();
+			}
+			//--------------------------------------------------------------
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_double() == rightxp->eval_double();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_int() == rightxp->eval_int();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_int() == rightxp->eval_double();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_double() == rightxp->eval_int();
+			}
+			return 99;
+		
+		}
+
 		else
 		{	
 			return 001;
@@ -371,6 +576,26 @@ double Expression::eval_double()
 			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == INT)
 			{
 				return leftxp->eval_double() * rightxp->eval_int();
+			}
+			return 0.0;
+		}
+		else if(o_type == DIVIDE)
+		{	
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_double() / rightxp->eval_double();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_int() / rightxp->eval_int();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_int() / rightxp->eval_double();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_double() / rightxp->eval_int();
 			}
 			return 0.0;
 		}
@@ -449,18 +674,7 @@ double Expression::eval_double()
 				return sqrt(rightxp->eval_double());
 			else return 0.0;		
 		}
-		else if(o_type == RANDOM)
-		{
-
-			if(rightxp->get_type() == INT)
-				return rand() % rightxp->eval_int();
-			else if (rightxp->get_type() == DOUBLE)
-			{
-				int tim = floor(rightxp->eval_double());
-				return rand() % tim;
-			}
-			else return 0.0;		
-		}
+		
 		/*else if(o_type == FLOOR)
 		{
 

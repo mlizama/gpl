@@ -197,6 +197,7 @@ variable_declaration:
         	{
 	
             		if ($3->get_type() != INT){
+			
                		//error -- the initializer is not of the correct type
 			}
             		else initial_value = $3->eval_int();
@@ -227,7 +228,7 @@ variable_declaration:
 	}
 	else if($1 == STRING)
 	{	
-		string initial_value = "";  // 0 is the default value for integers
+		string initial_value = "";  // 0 is the default value fonr integers
         	// if an initializer was specified
 		std::stringstream ss;
         	if ($3 != NULL)
@@ -505,11 +506,11 @@ expression:
     primary_expression{$$ = $1;}
     | expression T_OR expression{$$ = new Expression($1,OR,$3);}
     | expression T_AND expression{$$ = new Expression($1,AND,$3);}
-    | expression T_LESS_EQUAL expression{}
+    | expression T_LESS_EQUAL expression{$$ =  new Expression($1,LESS_THAN_EQUAL,$3);}
     | expression T_GREATER_EQUAL  expression{}
-    | expression T_LESS expression {}
-    | expression T_GREATER  expression{}
-    | expression T_EQUAL expression{}
+    | expression T_LESS expression {$$ =  new Expression($1,LESS_THAN,$3);}
+    | expression T_GREATER  expression{$$ =  new Expression($1,GREATER_THAN,$3);}
+    | expression T_EQUAL expression{new Expression($1,EQUAL,$3);}
     | expression T_NOT_EQUAL expression{}
     | expression T_PLUS expression {$$ = new Expression($1,PLUS,$3);}
     | expression T_MINUS expression{$$ = new Expression($1,MINUS,$3);}
@@ -517,7 +518,7 @@ expression:
     | expression T_DIVIDE expression{$$ = new Expression($1,DIVIDE,$3);}
     | expression T_MOD expression{$$ = new Expression($1,MOD,$3);}
     | T_MINUS  expression{$$ = new Expression($2,UNARY_MINUS);}
-    | T_NOT  expression{}
+    | T_NOT  expression{$$ = new Expression($2,NOT);}
     | math_operator T_LPAREN expression T_RPAREN{$$ = new Expression($3,$1);
 }
     | variable geometric_operator variable{}
