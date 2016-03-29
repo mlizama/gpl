@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cmath>
 #include "math.h"
+#include <string>
 #include <assert.h>     /* assert */
 
 Expression::Expression(int i_value)
@@ -76,6 +77,7 @@ Expression::Expression(Expression *left, Operator_type type, Expression *right)
 	else if(left->get_type() == STRING || left->get_type() == STRING)
 	{
 		m_type = STRING;
+
 	}
 	//if either left or right are doubles then we know the result is double, strings take 
 	else if(left->get_type() == DOUBLE || right->get_type() == DOUBLE)
@@ -131,7 +133,6 @@ int Expression::eval_int()
 		return m_variable->get_int_value();
 	}
 	else if(m_kind == EXPRESSION){
-
 		if(o_type == MULTIPLY)
 		{
 			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
@@ -180,8 +181,13 @@ int Expression::eval_int()
 			}
 			if(leftxp->get_type() == STRING && rightxp->get_type() == INT)
 			{
+
+
 				stream << rightxp->eval_int();
+
+
 				return leftxp->eval_string() < stream.str();
+				
 			}
 			if(leftxp->get_type() == STRING && rightxp->get_type() == DOUBLE)
 			{
@@ -311,6 +317,100 @@ int Expression::eval_int()
 				return leftxp->eval_double() > rightxp->eval_int();
 			}
 		}
+		else if(o_type == GREATER_THAN_EQUAL)
+		{
+			
+			std::stringstream stream;
+			if(leftxp->get_type() == STRING && rightxp->get_type() == STRING)
+			{
+				return leftxp->eval_string() >= rightxp->eval_string();
+			}
+			if(leftxp->get_type() == STRING && rightxp->get_type() == INT)
+			{
+				stream << rightxp->eval_int();
+				return leftxp->eval_string() >= stream.str();
+			}
+			if(leftxp->get_type() == STRING && rightxp->get_type() == DOUBLE)
+			{
+				stream << rightxp->eval_double();
+
+				return leftxp->eval_string() >= stream.str();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == STRING)
+			{
+				stream << leftxp->eval_int();
+				return stream.str() >= rightxp->eval_string();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == STRING)
+			{
+				stream << leftxp->eval_double();
+				return stream.str() >= rightxp->eval_string();
+			}
+			//----------------------------------------------------------------------
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_double() >= rightxp->eval_double();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_int() >= rightxp->eval_int();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_int() >= rightxp->eval_double();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_double() >= rightxp->eval_int();
+			}
+		}
+		else if(o_type == NOT_EQUAL)
+		{
+			
+			std::stringstream stream;
+			if(leftxp->get_type() == STRING && rightxp->get_type() == STRING)
+			{
+				return leftxp->eval_string() != rightxp->eval_string();
+			}
+			if(leftxp->get_type() == STRING && rightxp->get_type() == INT)
+			{
+				stream << rightxp->eval_int();
+				return leftxp->eval_string() != stream.str();
+			}
+			if(leftxp->get_type() == STRING && rightxp->get_type() == DOUBLE)
+			{
+				stream << rightxp->eval_double();
+
+				return leftxp->eval_string() != stream.str();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == STRING)
+			{
+				stream << leftxp->eval_int();
+				return stream.str() != rightxp->eval_string();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == STRING)
+			{
+				stream << leftxp->eval_double();
+				return stream.str() != rightxp->eval_string();
+			}
+			//----------------------------------------------------------------------
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_double() != rightxp->eval_double();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_int() != rightxp->eval_int();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == DOUBLE)
+			{
+				return leftxp->eval_int() != rightxp->eval_double();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == INT)
+			{
+				return leftxp->eval_double() != rightxp->eval_int();
+			}
+		}
 		else if(o_type == PLUS)
 		{
 			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
@@ -371,6 +471,33 @@ int Expression::eval_int()
 		}
 		else if(o_type == AND)
 		{
+			std::stringstream stream;
+			if(leftxp->get_type() == STRING && rightxp->get_type() == STRING)
+			{
+				return leftxp->eval_string() && rightxp->eval_string();
+			}
+			if(leftxp->get_type() == STRING && rightxp->get_type() == INT)
+			{
+				stream << rightxp->eval_int();
+				return leftxp->eval_string() && stream.str();
+			}
+			if(leftxp->get_type() == STRING && rightxp->get_type() == DOUBLE)
+			{
+				stream << rightxp->eval_double();
+
+				return leftxp->eval_string() && stream.str();
+			}
+			if(leftxp->get_type() == INT && rightxp->get_type() == STRING)
+			{
+				stream << leftxp->eval_int();
+				return stream.str() && rightxp->eval_string();
+			}
+			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == STRING)
+			{
+				stream << leftxp->eval_double();
+				return stream.str() && rightxp->eval_string();
+			}
+			//----------------------------------------------------------------
 			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
 			{
 				return leftxp->eval_double() && rightxp->eval_double();
@@ -455,6 +582,8 @@ int Expression::eval_int()
 		}
 		else if(o_type == EQUAL)
 		{
+
+
 			std::stringstream stream;
 			if(leftxp->get_type() == STRING && rightxp->get_type() == STRING)
 			{
@@ -462,6 +591,7 @@ int Expression::eval_int()
 			}
 			if(leftxp->get_type() == STRING && rightxp->get_type() == INT)
 			{
+
 				stream << rightxp->eval_int();
 				return leftxp->eval_string() == stream.str();
 			}
@@ -615,7 +745,7 @@ double Expression::eval_double()
 		else if(o_type == COS)
 		{
 
-			//assert(rightxp);
+
 			if(rightxp->get_type() == INT)
 				return cos(rightxp->eval_int()*M_PI/180);
 			else if (rightxp->get_type() == DOUBLE)

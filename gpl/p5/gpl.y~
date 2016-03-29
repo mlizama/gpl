@@ -188,14 +188,13 @@ variable_declaration:
     {
 
 	Symbol_table *table = Symbol_table::instance();
-
 	if($1 == INT)
 	{
 		int initial_value = 0;  // 0 is the default value for integers
         	// if an initializer was specified
         	if ($3 != NULL)
         	{
-	
+
             		if ($3->get_type() != INT){
 			
                		//error -- the initializer is not of the correct type
@@ -507,10 +506,10 @@ expression:
     | expression T_OR expression{$$ = new Expression($1,OR,$3);}
     | expression T_AND expression{$$ = new Expression($1,AND,$3);}
     | expression T_LESS_EQUAL expression{$$ =  new Expression($1,LESS_THAN_EQUAL,$3);}
-    | expression T_GREATER_EQUAL  expression{}
+    | expression T_GREATER_EQUAL  expression{$$ =  new Expression($1,GREATER_THAN_EQUAL,$3);}
     | expression T_LESS expression {$$ =  new Expression($1,LESS_THAN,$3);}
     | expression T_GREATER  expression{$$ =  new Expression($1,GREATER_THAN,$3);}
-    | expression T_EQUAL expression{new Expression($1,EQUAL,$3);}
+    | expression T_EQUAL expression{$$ = new Expression($1,EQUAL,$3);}
     | expression T_NOT_EQUAL expression{}
     | expression T_PLUS expression {$$ = new Expression($1,PLUS,$3);}
     | expression T_MINUS expression{$$ = new Expression($1,MINUS,$3);}
