@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cmath>
 #include "math.h"
+#include "error.h"
 #include <string>
 #include <assert.h>     /* assert */
 
@@ -471,7 +472,6 @@ int Expression::eval_int()
 		}
 		else if(o_type == AND)
 		{
-			
 			//----------------------------------------------------------------
 			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
 			{
@@ -503,9 +503,9 @@ int Expression::eval_int()
 		{
 
 			if(rightxp->get_type() == INT)
-				return floor(rightxp->eval_int());
+				return (int)floor(rightxp->eval_int());
 			else if (rightxp->get_type() == DOUBLE)
-				return floor(rightxp->eval_double());
+				return (int)floor(rightxp->eval_double());
 			else return 0;		
 		}
 		else if(o_type == ABS)
@@ -538,7 +538,7 @@ int Expression::eval_int()
 			}
 			else if(rightxp->get_type() == DOUBLE)
 			{
-				return rightxp->eval_double();
+				return rightxp->eval_double() * -1;
 			}
 		
 		}
@@ -713,7 +713,7 @@ double Expression::eval_double()
 			}
 			else if(rightxp->get_type() == DOUBLE)
 			{
-				return rightxp->eval_double();
+				return rightxp->eval_double() * -1;
 			}
 		
 		}
@@ -779,16 +779,6 @@ double Expression::eval_double()
 				return sqrt(rightxp->eval_double());
 			else return 0.0;		
 		}
-		
-		/*else if(o_type == FLOOR)
-		{
-
-			if(rightxp->get_type() == INT)
-				return floor(rightxp->eval_int());
-			else if (rightxp->get_type() == DOUBLE)
-				return floor(rightxp->eval_double());
-			else return 0;		
-		}*/
 		else if(o_type == ABS)
 		{
 
@@ -796,11 +786,14 @@ double Expression::eval_double()
 				return abs(rightxp->eval_int());
 			else if (rightxp->get_type() == DOUBLE)
 				return abs(rightxp->eval_double());
-			else return 0.0;		
+			else return 0.0;
+
 		}
-	else return 0.0;
+		
+		else return 0.0;
 	}
 	else return 0.0;
+			return 0.0;
 }
 string Expression::eval_string()
 {

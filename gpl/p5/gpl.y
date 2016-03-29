@@ -196,7 +196,7 @@ variable_declaration:
         	{
 
             		if ($3->get_type() != INT){
-			
+				
                		//error -- the initializer is not of the correct type
 			}
             		else initial_value = $3->eval_int();
@@ -504,7 +504,15 @@ variable:
 expression:
     primary_expression{$$ = $1;}
     | expression T_OR expression{$$ = new Expression($1,OR,$3);}
-    | expression T_AND expression{$$ = new Expression($1,AND,$3);}
+    | expression T_AND expression
+    {	
+	//possibly add an empty node
+	if($1->get_type() == STRING)
+	{Error::error(Error::INVALID_LEFT_OPERAND_TYPE, "&&");}
+	if ($3->get_type() == STRING)
+	{Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, "&&");}
+	$$ = new Expression($1,AND,$3);
+    }
     | expression T_LESS_EQUAL expression{$$ =  new Expression($1,LESS_THAN_EQUAL,$3);}
     | expression T_GREATER_EQUAL  expression{$$ =  new Expression($1,GREATER_THAN_EQUAL,$3);}
     | expression T_LESS expression {$$ =  new Expression($1,LESS_THAN,$3);}
@@ -517,7 +525,17 @@ expression:
     | expression T_DIVIDE expression{$$ = new Expression($1,DIVIDE,$3);}
     | expression T_MOD expression{$$ = new Expression($1,MOD,$3);}
     | T_MINUS  expression{$$ = new Expression($2,UNARY_MINUS);}
-    | T_NOT  expression{$$ = new Expression($2,NOT);}
+    | T_NOT  expression
+    {
+	if($2->get_type() == STRING)
+	{
+		Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, "!");
+
+	}
+	
+	$$ = new Expression($2,NOT);
+	
+    }
     | math_operator T_LPAREN expression T_RPAREN{$$ = new Expression($3,$1);
 }
     | variable geometric_operator variable{}
