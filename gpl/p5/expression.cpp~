@@ -54,7 +54,7 @@ Expression::Expression(Expression *exp, Operator_type type)
 		m_type = INT;
 	}
 	else if(o_type == UNARY_MINUS || o_type == ABS)
-	{	assert(false);
+	{
 		m_type = exp->get_type();	
 	}
 }
@@ -492,6 +492,7 @@ int Expression::eval_int()
 		}
 		else if(o_type == MOD)
 		{	
+			assert(false);
 			//can only mod ints
 			if(leftxp->get_type() == INT && rightxp->get_type() == INT)
 			{

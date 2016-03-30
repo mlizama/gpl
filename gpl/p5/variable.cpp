@@ -32,6 +32,8 @@ int Variable::get_int_value()
 	else if (exp)//only called when this is an expression int x = a[5 + y]
 	{
 		//
+		//int result = exp->eval_int();
+		sym->get_int_value();
 		return 9;
 	}
 	return 0;

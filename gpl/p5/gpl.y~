@@ -186,7 +186,7 @@ variable_declaration:
 
     simple_type  T_ID  optional_initializer
     {
-	cout << $3->get_type() << std::endl;
+
 	Symbol_table *table = Symbol_table::instance();
 	if($1 == INT)
 	{
@@ -252,15 +252,16 @@ variable_declaration:
 		table->addSymbol(*$2,tmp);
 	}
     }
-    | simple_type  T_ID  T_LBRACKET T_INT_CONSTANT T_RBRACKET
+    | simple_type  T_ID  T_LBRACKET expression T_RBRACKET
     {
 	Symbol_table *table = Symbol_table::instance();
 
 	if($1 == INT)
 	{
-		Symbol *tmp = new Symbol(*$2,INT_ARRAY,$4);
+		int opt = $4->eval_int();
+		Symbol *tmp = new Symbol(*$2,INT_ARRAY,opt);
 		table->addSymbol(*$2,tmp);
-	}
+	}/*
 	if($1 == DOUBLE)
 	{
 		Symbol *tmp = new Symbol(*$2,DOUBLE_ARRAY,$4);
@@ -270,7 +271,7 @@ variable_declaration:
 	{
 		Symbol *tmp = new Symbol(*$2,STRING_ARRAY,$4);
 		table->addSymbol(*$2,tmp);
-	}
+	}*/
     }
 	
     ;
@@ -478,10 +479,10 @@ variable:
 	Symbol_table *table = Symbol_table::instance();
 	if(table->find(*$1) == NULL)
 	{
-		
+		Error::error(Error::UNDECLARED_VARIABLE, *$1);
 		//Symbol *tmp = new Symbol("a",111);
 		//table->addSymbol("b",tmp);
-		//$$ = new Variable((table->find($1))->second));
+		//$$ = new Variable("$undeclared",0);
 	}
 	else
 	{
@@ -495,7 +496,33 @@ variable:
 	}
 
     }
-    | T_ID T_LBRACKET expression T_RBRACKET{}
+    | T_ID T_LBRACKET expression T_RBRACKET
+    {	
+	
+	Symbol_table *table = Symbol_table::instance();
+	if(table->find(*$1) == NULL)
+	{
+		//$$ = new Variable(0);
+		Error::error(Error::UNDECLARED_VARIABLE, *$1);
+
+	}
+	else if($3->get_type() == DOUBLE)
+	{
+		//$$ = new Variable(0);
+		Error::error(Error::ARRAY_INDEX_MUST_BE_AN_INTEGER, *$1, "A double expression");
+	}
+	else if(($3->get_type())->get_type() == STRING)
+	{
+		//$$ = new Variable("");
+		Error::error(Error::ARRAY_INDEX_MUST_BE_AN_INTEGER, *$1, "A string expression");
+	}
+	else if(!(table->find(*$1) & ARRAY))//is T_ID an array?
+	{
+		//$$ = new Variable("");
+		Error::error(Error::VARIABLE_NOT_AN_ARRAY, *$1);
+	}
+	//$$ = new Variable()
+    }
     | T_ID T_PERIOD T_ID{}
     | T_ID T_LBRACKET expression T_RBRACKET T_PERIOD T_ID{}
     ;
@@ -523,18 +550,52 @@ expression:
     | expression T_MINUS expression{$$ = new Expression($1,MINUS,$3);}
     | expression T_ASTERISK expression{$$ = new Expression($1,MULTIPLY,$3);}
     | expression T_DIVIDE expression{$$ = new Expression($1,DIVIDE,$3);}
-    | expression T_MOD expression{$$ = new Expression($1,MOD,$3);}
+    | expression T_MOD expression
+    {
+	int error = 0;
+	if($3->eval_int() == 0 )
+	{
+		Error::error(Error::MOD_BY_ZERO_AT_PARSE_TIME);	
+		//Should create an empty resulting nod from (lefxp mod rigxp) => result (0)
+		//will allow parsing to continue
+		//$$ = new Expression(0);
+		error = 1;
+	}
+	if($1->get_type() != INT)
+	{
+		Error::error(Error::INVALID_LEFT_OPERAND_TYPE, "%");
+		//$$ = new Expression(0);
+		error = 1;
+	}
+	if($3->get_type() != INT)
+	{
+		Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, "%");
+		//$$ = new Expression(0);
+		error = 1;
+	}
+
+	if(error)
+	{
+		$$ =  new Expression(0);
+	}
+	else
+	{
+		$$ = new Expression($1,MOD,$3);
+	}	
+    }
     | T_MINUS  expression{$$ = new Expression($2,UNARY_MINUS);}
     | T_NOT  expression
     {
 	if($2->get_type() == STRING)
 	{
 		Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, "!");
-
+		//create empty node?
+		$$ = new Expression("");
 	}
-	
+	else
+	{
 	$$ = new Expression($2,NOT);
-	
+	}	
     }
     | math_operator T_LPAREN expression T_RPAREN{$$ = new Expression($3,$1);
 }

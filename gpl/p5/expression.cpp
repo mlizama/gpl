@@ -492,6 +492,7 @@ int Expression::eval_int()
 		}
 		else if(o_type == MOD)
 		{	
+
 			//can only mod ints
 			if(leftxp->get_type() == INT && rightxp->get_type() == INT)
 			{

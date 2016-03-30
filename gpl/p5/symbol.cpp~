@@ -39,7 +39,7 @@ Symbol::Symbol(string name, Gpl_type type, int size)
 		int *tmp = new int[size];
 		for(int x = 0; x<size; x++)
 		{
-			tmp[x] = 42;
+			tmp[x] = 0;
 		}
 		s_data = (void*)tmp;
 	}
@@ -49,7 +49,7 @@ Symbol::Symbol(string name, Gpl_type type, int size)
 		double *tmp = new double[size];
 		for(int x = 0; x<size; x++)
 		{
-			tmp[x] = 3.14159;
+			tmp[x] = 0.0;
 		}
 		s_data = (void*)tmp;
 	}
@@ -59,7 +59,7 @@ Symbol::Symbol(string name, Gpl_type type, int size)
 		string *tmp = new string[size];
 		for(int x = 0; x<size; x++)
 		{
-			tmp[x] = "Hello world";
+			tmp[x] = "";
 		}
 		s_data = (void*)tmp;
 	}
@@ -85,7 +85,7 @@ void Symbol::print(ostream &os)
 	{
 		for(int x = 0; x < s_size;x++)
 		{
-			os << "int " << s_id << "[" << x << "]" << " = "<< *((int*)s_data) << endl;
+			os << "int " << s_id << "[" << x << "]" << " = "<< (((int*)s_data)[index]) << endl;
 			
 		}
 	}
@@ -93,7 +93,7 @@ void Symbol::print(ostream &os)
 	{
 		for(int x = 0; x < s_size;x++)
 		{
-			os << "double " << s_id << "[" << x << "]"  << " = "<< *((double*)s_data) << endl;
+			os << "double " << s_id << "[" << x << "]"  << " = "<< (((double*)s_data)[index]) << endl;
 			
 		}
 	}
@@ -102,7 +102,7 @@ void Symbol::print(ostream &os)
 		for(int x = 0; x < s_size;x++)
 		{
 			os << "string " << s_id << "[" << x << "]"  << " = "<< "\""
-			   <<*((string*)s_data) << "\""<< endl;
+			   << (((string*)s_data)[index]) << "\""<< endl;
 			
 		}
 	}
@@ -122,15 +122,15 @@ string Symbol::get_string_value() const
 int Symbol::get_int_value(int index) const
 {
 
-	return 0;//come back to this!!
+	return (((int*)s_data)[index]);//come back to this!!
 }
 double Symbol::get_double_value(int index) const
 {
-	return 0.0;//and this!!
+	return (((double*)s_data)[index]);//and this!!
 }
 string Symbol::get_string_value(int index) const
 {	
-	return " ";//also this!!!
+	return (((string*)s_data)[index]);
 }
 Gpl_type Symbol::get_base_type()
 {
