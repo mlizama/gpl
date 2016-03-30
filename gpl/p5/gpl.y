@@ -522,7 +522,7 @@ variable:
     }
     | T_ID T_LBRACKET expression T_RBRACKET
     {	
-	
+
 	Symbol_table *table = Symbol_table::instance();
 	if(table->find(*$1) == NULL)
 	{
@@ -552,6 +552,7 @@ variable:
 		Error::error(Error::ARRAY_INDEX_OUT_OF_BOUNDS, *($1), to_string($3->eval_int()));
 		$$ = new Variable(new Symbol("undclared",0));
 	}
+	else $$ = new Variable(table->find(*$1));
 	//$$ = new Variable()
     }
     | T_ID T_PERIOD T_ID{}
@@ -561,7 +562,14 @@ variable:
 //---------------------------------------------------------------------
 expression:
     primary_expression{$$ = $1;}
-    | expression T_OR expression{$$ = new Expression($1,OR,$3);}
+    | expression T_OR expression
+    {
+	if($1->get_type() == STRING)
+	{Error::error(Error::INVALID_LEFT_OPERAND_TYPE, "||");}
+	if ($3->get_type() == STRING)
+	{Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, "||");}
+	$$ = new Expression($1,OR,$3);
+    }
     | expression T_AND expression
     {	
 	//possibly add an empty node
@@ -691,8 +699,102 @@ expression:
 	$$ = new Expression($2,NOT);
 	}	
     }
-    | math_operator T_LPAREN expression T_RPAREN{$$ = new Expression($3,$1);
-}
+    | math_operator T_LPAREN expression T_RPAREN
+    {
+	
+	
+	if($1 == COS)
+	{
+		if($3->get_type() == STRING)
+		{
+			Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, operator_to_string(COS));	
+			$$ = new Expression(0);
+		}
+		else $$ = new Expression($3,$1);
+	}
+	else if($1 == SIN)
+	{
+		if($3->get_type() == STRING)
+		{
+			Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, operator_to_string(SIN));	
+			$$ = new Expression(0);
+		}
+		else $$ = new Expression($3,$1);
+	}
+	else if($1 == TAN)
+	{
+		if($3->get_type() == STRING)
+		{
+			Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, operator_to_string(TAN));	
+			$$ = new Expression(0);
+		}
+		else $$ = new Expression($3,$1);
+	}
+	else if($1 == ACOS)
+	{
+		if($3->get_type() == STRING)
+		{
+			Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, operator_to_string(ACOS));	
+			$$ = new Expression(0);
+		}
+		else $$ = new Expression($3,$1);
+	}
+	else if($1 == ASIN)
+	{
+		if($3->get_type() == STRING)
+		{
+			Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, operator_to_string(ASIN));	
+			$$ = new Expression(0);
+		}
+		else $$ = new Expression($3,$1);
+	}
+	else if($1 == ATAN)
+	{
+		if($3->get_type() == STRING)
+		{
+			Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, operator_to_string(ATAN));	
+			$$ = new Expression(0);
+		}
+		else $$ = new Expression($3,$1);
+	}
+	else if($1 == SQRT)
+	{
+		if($3->get_type() == STRING)
+		{
+			Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, operator_to_string(SQRT));	
+			$$ = new Expression(0);
+		}
+		else $$ = new Expression($3,$1);
+	}
+	else if($1 == ABS)
+	{
+		if($3->get_type() == STRING)
+		{
+			Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, operator_to_string(ABS));	
+			$$ = new Expression(0);
+		}
+		else $$ = new Expression($3,$1);
+	}
+	else if($1 == FLOOR)
+	{
+		if($3->get_type() == STRING)
+		{
+			Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, operator_to_string(FLOOR));	
+			$$ = new Expression(0);
+		}
+		else $$ = new Expression($3,$1);
+	}
+	else if($1 == RANDOM)
+	{
+		if($3->get_type() == STRING)
+		{
+			Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, operator_to_string(RANDOM));	
+			$$ = new Expression(0);
+		}
+		else $$ = new Expression($3,$1);
+	}
+	else $$ = new Expression($3,$1);
+    }
     | variable geometric_operator variable{}
     ;
 
