@@ -195,10 +195,15 @@ variable_declaration:
         	if ($3 != NULL)
         	{
 
-            		if ($3->get_type() != INT){
+            		if ($3->get_type() == STRING){
 				
-               		//error -- the initializer is not of the correct type
+ 	     	 		Error::error(Error::INVALID_TYPE_FOR_INITIAL_VALUE, "string", *$2, "int");
 			}
+			else if($3->get_type() == DOUBLE)
+			{
+ 	     	 		Error::error(Error::INVALID_TYPE_FOR_INITIAL_VALUE, "double", *$2, "int");
+			}
+			
             		else initial_value = $3->eval_int();
 			
         	}
@@ -254,24 +259,39 @@ variable_declaration:
     }
     | simple_type  T_ID  T_LBRACKET expression T_RBRACKET
     {
-	Symbol_table *table = Symbol_table::instance();
 
+	Symbol_table *table = Symbol_table::instance();
+	if ($4->get_type() == INT && $4->eval_int() <= 0) 
+	{
+		Error::error(Error::INVALID_ARRAY_SIZE, *$2 , to_string($4->eval_int()));
+	}
 	if($1 == INT)
 	{
 		int opt = $4->eval_int();
 		Symbol *tmp = new Symbol(*$2,INT_ARRAY,opt);
 		table->addSymbol(*$2,tmp);
-	}/*
+	}
+	if($4->get_type() == STRING)
+	{
+
+		Error::error(Error::INVALID_ARRAY_SIZE, *$2, $4->eval_string());	
+	}
+	if($4->get_type() == DOUBLE)
+	{
+		std::stringstream stream;
+		stream << $4->eval_double();
+		Error::error(Error::INVALID_ARRAY_SIZE, *$2, stream.str());	
+	}
 	if($1 == DOUBLE)
 	{
-		Symbol *tmp = new Symbol(*$2,DOUBLE_ARRAY,$4);
+		Symbol *tmp = new Symbol(*$2,DOUBLE_ARRAY,$4->eval_int());
 		table->addSymbol(*$2,tmp);
 	}
 	if($1 == STRING)
 	{
-		Symbol *tmp = new Symbol(*$2,STRING_ARRAY,$4);
+		Symbol *tmp = new Symbol(*$2,STRING_ARRAY,$4->eval_int());
 		table->addSymbol(*$2,tmp);
-	}*/
+	}
     }
 	
     ;
@@ -521,6 +541,11 @@ variable:
 		//$$ = new Variable("");
 		Error::error(Error::VARIABLE_NOT_AN_ARRAY, *$1);
 	}
+	else if($3->get_type() == INT && $3->eval_int() >= (table->find(*$1))->size())
+	{
+		Error::error(Error::ARRAY_INDEX_OUT_OF_BOUNDS, *($1), to_string($3->eval_int()));
+		//$$ = new Variable();
+	}
 	//$$ = new Variable()
     }
     | T_ID T_PERIOD T_ID{}
@@ -549,7 +574,44 @@ expression:
     | expression T_PLUS expression {$$ = new Expression($1,PLUS,$3);}
     | expression T_MINUS expression{$$ = new Expression($1,MINUS,$3);}
     | expression T_ASTERISK expression{$$ = new Expression($1,MULTIPLY,$3);}
-    | expression T_DIVIDE expression{$$ = new Expression($1,DIVIDE,$3);}
+    | expression T_DIVIDE expression
+    {
+
+	if($3->get_type() == INT)
+	{
+
+		if($3->eval_int() == 0)
+		{
+			Error::error(Error::DIVIDE_BY_ZERO_AT_PARSE_TIME, operator_to_string(DIVIDE));
+			$$ = new Expression(0);
+		}	
+		else	$$ = new Expression($1,DIVIDE,$3);
+	}
+	else if($3->get_type() == DOUBLE)
+	{
+
+		if($3->eval_double() == 0.0)
+		{
+			Error::error(Error::DIVIDE_BY_ZERO_AT_PARSE_TIME, operator_to_string(DIVIDE));
+			$$ = new Expression(0.0);
+		}	
+		else	$$ = new Expression($1,DIVIDE,$3);
+	}
+	
+	if ($1->get_type() == STRING)
+	{
+		assert(false);
+		Error::error(Error::INVALID_LEFT_OPERAND_TYPE, operator_to_string(DIVIDE));
+		$$ = new Expression("");	
+	}
+	if ($3->get_type() == STRING)
+	{
+		assert(false);
+		Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, operator_to_string(DIVIDE));
+		$$ = new Expression("");
+	}
+	
+    }
     | expression T_MOD expression
     {
 	int error = 0;
@@ -590,7 +652,7 @@ expression:
 	{
 		Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, "!");
 		//create empty node?
-		$$ = new Expression("");
+		$$ = new Expression(0);
 	}
 	else
 	{

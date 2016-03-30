@@ -25,6 +25,7 @@ class Symbol
 	double get_double_value() const;
 	string get_string_value() const;
 	Gpl_type get_type();
+	int size(){return s_size;}
 
 	int get_int_value(int index) const;
 	double get_double_value(int index) const;

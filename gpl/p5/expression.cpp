@@ -75,7 +75,7 @@ Expression::Expression(Expression *left, Operator_type type, Expression *right)
 		m_type = INT;
 	}
 	//if either left or right are strings then the expression evals to string covers arithmetic operators
-	else if(left->get_type() == STRING || left->get_type() == STRING)
+	else if(left->get_type() == STRING || right->get_type() == STRING)
 	{
 		m_type = STRING;
 
@@ -155,20 +155,25 @@ int Expression::eval_int()
 		}
 		else if(o_type == DIVIDE)
 		{
+
 			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
 			{
+
 				return leftxp->eval_double() / rightxp->eval_double();
 			}
 			if(leftxp->get_type() == INT && rightxp->get_type() == INT)
 			{
+
 				return leftxp->eval_int() / rightxp->eval_int();
 			}
 			if(leftxp->get_type() == INT && rightxp->get_type() == DOUBLE)
 			{
+
 				return leftxp->eval_int() / rightxp->eval_double();
 			}
 			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == INT)
 			{
+
 				return leftxp->eval_double() / rightxp->eval_int();
 			}
 		}
@@ -673,37 +678,38 @@ double Expression::eval_double()
 			}
 			if(leftxp->get_type() == INT && rightxp->get_type() == INT)
 			{
-				return leftxp->eval_int() * rightxp->eval_int();
+				return (double)leftxp->eval_int() * (double)rightxp->eval_int();
 			}
 			if(leftxp->get_type() == INT && rightxp->get_type() == DOUBLE)
 			{
-				return leftxp->eval_int() * rightxp->eval_double();
+				return (double)leftxp->eval_int() * rightxp->eval_double();
 			}
 			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == INT)
 			{
-				return leftxp->eval_double() * rightxp->eval_int();
+				return leftxp->eval_double() * (double)rightxp->eval_int();
 			}
 			return 0.0;
 		}
 		else if(o_type == DIVIDE)
 		{	
+
 			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == DOUBLE)
-			{
-				return leftxp->eval_double() / rightxp->eval_double();
+			{	
+				return (double)leftxp->eval_double() / (double)rightxp->eval_double();
 			}
 			if(leftxp->get_type() == INT && rightxp->get_type() == INT)
 			{
-				return leftxp->eval_int() / rightxp->eval_int();
+				return (double)leftxp->eval_int() / (double)rightxp->eval_int();
 			}
 			if(leftxp->get_type() == INT && rightxp->get_type() == DOUBLE)
 			{
-				return leftxp->eval_int() / rightxp->eval_double();
+				return (double)leftxp->eval_int() / (double)rightxp->eval_double();
 			}
 			if(leftxp->get_type() == DOUBLE && rightxp->get_type() == INT)
 			{
-				return leftxp->eval_double() / rightxp->eval_int();
+				return (double)leftxp->eval_double() / (double)rightxp->eval_int();
 			}
-			return 0.0;
+			return 99;
 		}
 		else if(o_type == UNARY_MINUS)
 		{

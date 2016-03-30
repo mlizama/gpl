@@ -1,6 +1,7 @@
 #include "gpl_type.h"
 #include <iostream>
 
+
 using namespace std;
 #ifndef SYMBOL_H
 #define SYMBOL_H
