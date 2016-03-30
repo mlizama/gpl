@@ -12,11 +12,11 @@ Variable::Variable(Symbol* symb)
 	m_type = sym->get_type();
 	assert(symb != NULL);
 }
-Variable::Variable(Expression *expp)
+Variable::Variable(Symbol* symb, Expression *expp)
 {
 
 	//does not hold a single var ex: int x = i;
-	var = NULL;
+	sym = symb;
 	exp = expp;
 	m_type = expp->get_type();
 	assert(exp != NULL);
@@ -33,8 +33,8 @@ int Variable::get_int_value()
 	{
 		//
 		//int result = exp->eval_int();
-		sym->get_int_value();
-		return 9;
+		return sym->get_int_value(exp->eval_int());
+		
 	}
 	return 0;
 }
@@ -43,6 +43,13 @@ double Variable::get_double_value()
 	if(sym)
 	{
 		return sym->get_double_value();
+	}
+	else if (exp)//only called when this is an expression int x = a[5 + y]
+	{
+		//
+		//int result = exp->eval_int();
+		return sym->get_double_value(exp->eval_int());
+		
 	}
 	else return 0.0;
 }
@@ -53,6 +60,13 @@ string Variable::get_string_value()
 	
 		return sym->get_string_value();
 
+	}
+	else if (exp)//only called when this is an expression int x = a[5 + y]
+	{
+		//
+		//int result = exp->eval_int();
+		return sym->get_string_value(exp->eval_int());
+		
 	}
 	else return "";
 }

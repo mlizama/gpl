@@ -17,7 +17,7 @@ class Variable
 
 	public:
 		Variable(Symbol* symb);
-		Variable(Expression *expp);
+		Variable(Symbol* symb, Expression *expp);
 		Gpl_type get_type();
 		int get_int_value();
 		double get_double_value();

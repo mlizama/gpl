@@ -148,14 +148,11 @@ int lines = 0;
 
 %left T_OR;
 %left T_AND;
-%left T_NOT_EQUAL 
-%left T_EQUAL;
-%left T_GREATER T_GREATER_EQUAL 
-%left T_LESS T_LESS_EQUAL;
+%left T_NOT_EQUAL T_EQUAL;
+%left T_GREATER T_GREATER_EQUAL T_LESS T_LESS_EQUAL;
 %left T_PLUS T_MINUS;
-%left T_ASTERISK
-%left T_DIVIDE
-%left T_MOD;
+%left T_ASTERISK T_DIVIDE T_MOD;
+
 %right T_NOT;
 %nonassoc UNARY_OPS;
 %nonassoc T_IF_NO_ELSE;
@@ -552,7 +549,7 @@ variable:
 		Error::error(Error::ARRAY_INDEX_OUT_OF_BOUNDS, *($1), to_string($3->eval_int()));
 		$$ = new Variable(new Symbol("undclared",0));
 	}
-	else $$ = new Variable(table->find(*$1));
+	else $$ = new Variable(table->find(*$1), $3);
 	//$$ = new Variable()
     }
     | T_ID T_PERIOD T_ID{}

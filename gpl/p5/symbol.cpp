@@ -122,15 +122,15 @@ string Symbol::get_string_value() const
 int Symbol::get_int_value(int index) const
 {
 
-	return (((int*)s_data)[index]);//come back to this!!
+	return *((int*)s_data + index);//come back to this!!
 }
 double Symbol::get_double_value(int index) const
 {
-	return (((double*)s_data)[index]);//and this!!
+	return *((double*)s_data + index);//and this!!
 }
 string Symbol::get_string_value(int index) const
 {	
-	return (((string*)s_data)[index]);
+	return *((string*)s_data + index);
 }
 Gpl_type Symbol::get_base_type()
 {

@@ -14,6 +14,7 @@ class Variable
 		Variable *var;
 		Symbol *sym;
 		Gpl_type m_type;
+
 	public:
 		Variable(Symbol* symb);
 		Variable(Expression *expp);

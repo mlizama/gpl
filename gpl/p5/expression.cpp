@@ -628,7 +628,13 @@ double Expression::eval_double()
 	}
 	else if(m_kind == VARIABLE)
 	{
-		return m_variable->get_double_value();
+		if(m_variable->get_type() == INT || m_variable->get_type() == INT_ARRAY)
+		{
+			return (double) m_variable->get_int_value();
+		}
+		
+		else	
+			return m_variable->get_double_value();
 	}
 	else if(m_kind == EXPRESSION){
 			
@@ -810,8 +816,24 @@ string Expression::eval_string()
 		return str_value;
 	}
 	else if(m_kind == VARIABLE)
-	{
-		return m_variable->get_string_value();
+	{	
+		if(m_variable->get_type() == INT || m_variable->get_type() == INT_ARRAY)
+		{
+			stringstream ss;
+			ss << m_variable->get_int_value();
+			return ss.str();
+		}
+		else if(m_variable->get_type() == DOUBLE || m_variable->get_type() == DOUBLE_ARRAY)
+		{
+			stringstream ss;
+			ss << m_variable->get_double_value();
+			return ss.str();
+		}
+		else
+		{
+			return m_variable->get_string_value();
+		}
+
 	}
 	else if(m_kind == EXPRESSION){
 		
