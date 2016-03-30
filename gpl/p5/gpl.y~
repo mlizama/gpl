@@ -194,7 +194,7 @@ variable_declaration:
         	// if an initializer was specified
         	if ($3 != NULL)
         	{
-			cout << $3->get_type();
+
             		if ($3->get_type() == STRING){
 				
  	     	 		Error::error(Error::INVALID_TYPE_FOR_INITIAL_VALUE, "string", *$2, "int");
@@ -221,6 +221,10 @@ variable_declaration:
 				if($3->get_type() == INT)
 				{
 					initial_value = $3->eval_int();
+				}
+				else
+				{
+ 	     			 	Error::error(Error::INVALID_TYPE_FOR_INITIAL_VALUE, "string", *$2, "double");
 				}
                		//error -- the initializer is not of the correct type
 			}
@@ -502,7 +506,7 @@ variable:
 		Error::error(Error::UNDECLARED_VARIABLE, *$1);
 		//Symbol *tmp = new Symbol("a",111);
 		//table->addSymbol("b",tmp);
-		//$$ = new Variable("$undeclared",0);
+		$$ = new Variable(new Symbol("undclared",0));
 	}
 	else
 	{
@@ -522,29 +526,31 @@ variable:
 	Symbol_table *table = Symbol_table::instance();
 	if(table->find(*$1) == NULL)
 	{
-		//$$ = new Variable(0);
 		Error::error(Error::UNDECLARED_VARIABLE, *$1);
-
+		$$ = new Variable(new Symbol("undclared",0));
 	}
 	else if($3->get_type() == DOUBLE)
 	{
-		//$$ = new Variable(0);
+
 		Error::error(Error::ARRAY_INDEX_MUST_BE_AN_INTEGER, *$1, "A double expression");
+		$$ = new Variable(new Symbol("undclared",0));
 	}
 	else if($3->get_type() == STRING)
 	{
-		//$$ = new Variable("");
+
 		Error::error(Error::ARRAY_INDEX_MUST_BE_AN_INTEGER, *$1, "A string expression");
+		$$ = new Variable(new Symbol("undclared",0));
 	}
 	else if(!((table->find(*$1))->get_type() & ARRAY))//is T_ID an array?
 	{
-		//$$ = new Variable("");
+
 		Error::error(Error::VARIABLE_NOT_AN_ARRAY, *$1);
+		$$ = new Variable(new Symbol("undclared",0));
 	}
 	else if($3->get_type() == INT && $3->eval_int() >= (table->find(*$1))->size())
 	{
 		Error::error(Error::ARRAY_INDEX_OUT_OF_BOUNDS, *($1), to_string($3->eval_int()));
-		//$$ = new Variable();
+		$$ = new Variable(new Symbol("undclared",0));
 	}
 	//$$ = new Variable()
     }
@@ -572,7 +578,20 @@ expression:
     | expression T_EQUAL expression{$$ = new Expression($1,EQUAL,$3);}
     | expression T_NOT_EQUAL expression{$$ = new Expression($1,NOT_EQUAL,$3);}
     | expression T_PLUS expression {$$ = new Expression($1,PLUS,$3);}
-    | expression T_MINUS expression{$$ = new Expression($1,MINUS,$3);}
+    | expression T_MINUS expression
+    {
+	if($1->get_type() == STRING || $3->get_type() == STRING){
+		if($1->get_type() == STRING)
+		{
+			Error::error(Error::INVALID_LEFT_OPERAND_TYPE, operator_to_string(MINUS));
+		}
+		if($3->get_type() == STRING)
+		{
+			Error::error(Error::INVALID_RIGHT_OPERAND_TYPE, operator_to_string(MINUS));
+		}
+	}
+	else 	$$ = new Expression($1,MINUS,$3);
+    }
     | expression T_ASTERISK expression{$$ = new Expression($1,MULTIPLY,$3);}
     | expression T_DIVIDE expression
     {
