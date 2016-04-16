@@ -24,7 +24,7 @@ class Symbol
 	Symbol(string name, double value);
         Symbol(string name, string value);
 	Symbol(string name, Gpl_type type, int size);
-	Symbol(string name, Game_Object *game_obj);
+	Symbol(string name, Game_object *game_obj);
 
 	Game_object * get_game_object_value();
 

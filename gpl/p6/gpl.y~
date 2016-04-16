@@ -335,16 +335,16 @@ object_declaration:
       	        cur_object_under_construction = new Triangle();
        	        break;
 		case CIRCLE:
-      	        cur_object_under_construction = new Circle();
+      	        cur_object_under_construction = new Triangle();
        	        break;
 		case RECTANGLE:
-      	        cur_object_under_construction = new Rectangle();
+      	        cur_object_under_construction = new Triangle();
        	        break;
 		case TEXTBOX:
-      	        cur_object_under_construction = new Textbox();
+      	        cur_object_under_construction = new Triangle();
        	        break;
 		case PIXMAP:
-      	        cur_object_under_construction = new Pixmap();
+      	        cur_object_under_construction = new Triangle();
        	        break;
 		default:
 		break;

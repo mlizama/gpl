@@ -28,12 +28,6 @@
 
 #include "gpl_type.h"
 
-#include "circle.h"
-#include "triangle.h"
-#include "rectangle.h"
-#include "textbox.h"
-#include "pixmap.h"
-
 #include <string>
 #include "variable.h" 
 #include "expression.h"

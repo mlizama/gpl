@@ -22,19 +22,6 @@ void Symbol_table::print(ostream &os)
 }
 Symbol_table *Symbol_table::m_instance = NULL;
 
-// the same as find()
-Symbol* Symbol_table::lookup(string sym)
-{
-	if(symbol_map.find(sym) == symbol_map.end())
-	{
-		return NULL;
-	}
-	else// if the symbol is in the symbol table already then throw error
-	{
-		return ((symbol_map.find(sym))->second);
-	}
-}
-
 Symbol_table *Symbol_table::instance()
 {
   if (m_instance == NULL)
@@ -53,15 +40,15 @@ void Symbol_table::addSymbol(string key,Symbol *symbol)
                 Error::error(Error::PREVIOUSLY_DECLARED_VARIABLE, key);
 	}
 }
-Symbol* Symbol_table::find(string sym)
+Symbol* Symbol_table::find(string symbol)
 {
-	if(symbol_map.find(sym) == symbol_map.end())
+	if(symbol_map.find(symbol) == symbol_map.end())
 	{
 		return NULL;
 	}
 	else// if the symbol is in the symbol table already then throw error
 	{
-		return ((symbol_map.find(sym))->second);
+		return ((symbol_map.find(symbol))->second);
 	}
 }
 

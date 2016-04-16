@@ -16,7 +16,6 @@ class Symbol_table
     void print(ostream &os);
     void addSymbol(string key, Symbol *symbol);
     Symbol *find(string sym);
-    Symbol *lookup(string sym);//same as above, pain in the ass to look for them.
 
 
   private:

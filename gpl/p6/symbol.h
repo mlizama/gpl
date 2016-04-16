@@ -27,6 +27,7 @@ class Symbol
 	Symbol(string name, Game_object *game_obj);
 
 	Game_object * get_game_object_value();
+	bool is_game_object();
 
 	Gpl_type get_base_type();
 	int get_int_value() const;

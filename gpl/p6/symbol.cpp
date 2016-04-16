@@ -1,10 +1,20 @@
 #include "symbol.h"
-
-Symbol::Game_object *Symbol::get_game_object_value()
+bool Symbol::is_game_object()
+{
+	if(s_type == GAME_OBJECT)
+	{
+		return true;	
+	}
+	else
+	{
+		return false;
+	}
+}
+Game_object* Symbol::get_game_object_value()
 {
 	return game;	
 }
-Symbol::Symbol(string name, Game_Object *game_obj)
+Symbol::Symbol(string name, Game_object *game_obj)
 {
 	s_type = GAME_OBJECT;
 	s_id = name;
