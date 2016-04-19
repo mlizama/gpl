@@ -28,6 +28,7 @@ class Symbol
 
 	Game_object * get_game_object_value();
 	bool is_game_object();
+	void set(int x);
 
 	Gpl_type get_base_type();
 	int get_int_value() const;

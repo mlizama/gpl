@@ -10,6 +10,12 @@ bool Symbol::is_game_object()
 		return false;
 	}
 }
+void Symbol::set(int x)
+{
+	int* tmp = new int;
+	*tmp = x;
+	s_data = (void*)tmp;
+}
 Game_object* Symbol::get_game_object_value()
 {
 	return game;	
@@ -129,7 +135,8 @@ void Symbol::print(ostream &os)
 	}
 	else if(s_type == GAME_OBJECT)
 	{
-		game->print(s_id, os);
+		game->print(s_id,os);
+		//os << "hello";
 	}
 }
 int Symbol::get_int_value() const

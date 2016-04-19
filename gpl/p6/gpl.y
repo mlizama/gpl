@@ -18,6 +18,7 @@ extern int line_count;            // current line in the input; from record.l
 using namespace std;
 
 Game_object *cur_object_under_construction;
+string name_cur_object_under_construction;
 
 int lines = 0;
 
@@ -329,6 +330,8 @@ optional_initializer:
 object_declaration:
     object_type T_ID 
     {//action after right T_ID
+	Symbol_table *table = Symbol_table::instance();
+	name_cur_object_under_construction = *$2;
 	switch ($1)
    	{
 		case TRIANGLE:
@@ -352,6 +355,11 @@ object_declaration:
    	  }
     }
     T_LPAREN parameter_list_or_empty T_RPAREN
+    {
+	Symbol_table *table = Symbol_table::instance();
+	Symbol *tmp  = new Symbol(*$2,cur_object_under_construction);
+	table->addSymbol(*$2,tmp);
+    }
 
     | object_type T_ID T_LBRACKET expression T_RBRACKET
     ;
@@ -388,14 +396,55 @@ parameter_list_or_empty :
 
 //---------------------------------------------------------------------
 parameter_list :
-    parameter_list T_COMMA parameter
+    parameter_list T_COMMA parameter{}
     | parameter
+    {}
     ;
 
 //---------------------------------------------------------------------
 parameter:
     T_ID T_ASSIGN expression
-	{}
+    {
+	Gpl_type type;
+	Gpl_type exp_type = $3->get_type();
+	Status status = cur_object_under_construction->get_member_variable_type(*$1,type);
+	if (status == OK)
+	{
+		if(type == INT)
+		{
+			if(exp_type == INT)
+			{
+				cur_object_under_construction->set_member_variable(*$1, $3->eval_int());
+			}
+			else
+			{
+				//error goes here
+			}
+		}
+		else if(type == DOUBLE)
+		{
+			if(exp_type == INT  || exp_type == DOUBLE)
+			{
+				cur_object_under_construction->set_member_variable(*$1, $3->eval_double());
+			}
+			else
+			{
+				//error goes here
+			}
+		}
+		else if(type == STRING || type == INT || type == DOUBLE)
+		{
+			if(exp_type == INT  || exp_type == DOUBLE)
+			{
+				cur_object_under_construction->set_member_variable(*$1, $3->eval_string());
+			}
+			else
+			{
+				//error goes here
+			}
+		}
+	}
+    }
     ;
 
 //---------------------------------------------------------------------
