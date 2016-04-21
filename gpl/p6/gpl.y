@@ -453,12 +453,28 @@ parameter:
 				Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE,name_cur_object_under_construction,*$1);
 			}
 		}
-		else if(type == STRING || type == INT || type == DOUBLE)
+		else if(type == STRING )
 		{
-			if(exp_type == INT  || exp_type == DOUBLE)
+			stringstream ss;
+			if(exp_type == INT)
 			{
-				cur_object_under_construction->set_member_variable(*$1, $3->eval_string());
+				ss << $3->eval_int();
+				cur_object_under_construction->set_member_variable(*$1, ss.str());
 			}
+			else if(exp_type == DOUBLE)
+			{
+				ss << $3->eval_double();
+				cur_object_under_construction->set_member_variable(*$1, ss.str());
+			}
+			else if(exp_type == STRING)
+			{
+				ss << $3->eval_string();
+				cur_object_under_construction->set_member_variable(*$1, ss.str());
+			}
+			//if(exp_type == INT  || exp_type == DOUBLE || exp_type == STRING)
+			//{
+			//	cur_object_under_construction->set_member_variable(*$1, $3->eval_string());
+			//}
 			else
 			{
 				//error goes here
