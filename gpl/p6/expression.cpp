@@ -14,6 +14,7 @@ Animation_block* Expression::get_animation()
 }
 Expression::Expression(int i_value)
 {
+	//cout << i_value << endl;
 	int_value = i_value;//set int value
 	str_value = "";//default string if not string
 	dbl_value = 0.0;//default double if not double
@@ -630,6 +631,10 @@ double Expression::eval_double()
 	if(m_kind == CONSTANT && m_type == DOUBLE)
 	{
 		return dbl_value;
+	}
+	if(m_kind == CONSTANT && m_type == INT)
+	{
+		return int_value;
 	}
 	else if(m_kind == VARIABLE)
 	{

@@ -429,7 +429,20 @@ parameter:
 	Status status = cur_object_under_construction->get_member_variable_type(*$1,type);
 	if (status == OK)
 	{
-		if(type == INT)
+		if(*$1 == "skew")
+		{
+			if(type == INT)
+			{
+				cur_object_under_construction->set_member_variable(*$1, (double)($3->eval_int()));
+			}
+			else
+			{
+				cur_object_under_construction->set_member_variable(*$1, $3->eval_double());
+			}
+			//cout << $3->get_type()<< endl;
+			//cur_object_under_construction->set_member_variable(*$1, 2.0);
+		}
+		else if(type == INT)
 		{
 			if(exp_type == INT)
 			{
@@ -494,6 +507,10 @@ parameter:
 			 //	Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE,name_cur_object_under_construction,*$1);
 			//}
 		}
+	}
+	else
+	{
+		Error::error(Error::UNKNOWN_CONSTRUCTOR_PARAMETER, cur_object_under_construction->type() , *$1);
 	}
     }
     ;
@@ -565,6 +582,11 @@ animation_parameter:
 	obj->never_draw();
 
 	Symbol *sym = new Symbol(*$2,obj);
+	if(table->lookup(*$2) != NULL)
+	{
+  		Error::error(Error::ANIMATION_PARAMETER_NAME_NOT_UNIQUE, *$2);			
+	}
+	else
 	table->addSymbol(*$2,sym);
 
 	$$ = sym;
@@ -747,17 +769,27 @@ variable:
 	Status status;
 	if(!found)
 	{
+	    	Error::error(Error::UNDECLARED_VARIABLE, *$1);
+		$$ = new Variable(new Symbol("undclared",0));
+	}
+	else if (found->get_type() != GAME_OBJECT)
+	{
+		Error::error(Error::LHS_OF_PERIOD_MUST_BE_OBJECT, *$1);
 		$$ = new Variable(new Symbol("undclared",0));
 	}
 	else
 	{
-		if(found->get_type() != GAME_OBJECT)
+		Game_object *obj = found->get_game_object_value();
+		Status status = obj->get_member_variable_type(*$3,type);
+		if(status != OK)
 		{
-
+			//possible bug here    		
+		    Error::error(Error::UNDECLARED_MEMBER, *$1, *$3);
+		   $$ = new Variable(new Symbol("undclared",0));
 		}
 		else
 		{
-			$$ = new Variable(*$3,found);
+				$$ = new Variable(*$3,found);	
 		}
 	}
     }
@@ -769,6 +801,11 @@ variable:
 	if( sym == NULL)
 	{
 		//error
+	}
+	else if (sym->get_type() != GAME_OBJECT)
+	{
+		Error::error(Error::LHS_OF_PERIOD_MUST_BE_OBJECT, *$1);
+		$$ = new Variable(new Symbol("undclared",0));
 	}
 	else if($3->get_type() == INT)
 	{
