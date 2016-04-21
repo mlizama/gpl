@@ -34,6 +34,7 @@ int lines = 0;
  Expression	*union_expression;
  Variable	*union_variable;
  Operator_type   union_operator;
+ Symbol		*union_symbol;
 }
 
 
@@ -151,6 +152,7 @@ int lines = 0;
 %type <union_operator> math_operator
 %type <union_variable> variable
 %type <union_int> object_type
+%type <union_symbol> animation_parameter 
 //%type <%union> optional_initializer
 
 %left T_OR;
@@ -190,7 +192,7 @@ variable_declaration:
 
     simple_type  T_ID  optional_initializer
     {
-
+	//assert(false);
 	Symbol_table *table = Symbol_table::instance();
 	if($1 == INT)
 	{
@@ -390,8 +392,8 @@ object_type:
 
 //---------------------------------------------------------------------
 parameter_list_or_empty :
-    parameter_list
-    | empty
+    parameter_list{}
+    | empty{}
     ;
 
 //---------------------------------------------------------------------
@@ -419,6 +421,7 @@ parameter:
 			else
 			{
 				//error goes here
+			 	Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE,name_cur_object_under_construction,*$1);
 			}
 		}
 		else if(type == DOUBLE)
@@ -430,6 +433,7 @@ parameter:
 			else
 			{
 				//error goes here
+				Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE,name_cur_object_under_construction,*$1);
 			}
 		}
 		else if(type == STRING || type == INT || type == DOUBLE)
@@ -441,7 +445,21 @@ parameter:
 			else
 			{
 				//error goes here
+			 	Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE,name_cur_object_under_construction,*$1);
 			}
+		}/////
+		else if(type == ANIMATION_BLOCK)
+		{
+			//std::cout << "xxxxxxxxxllxxx";
+			//if(exp_type == ANIMATION_BLOCK)
+			//{
+				cur_object_under_construction->set_member_variable(*$1, $3->get_animation());
+			//}
+			//else
+			//{
+				//error goes here
+			 //	Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE,name_cur_object_under_construction,*$1);
+			//}
 		}
 	}
     }
@@ -450,6 +468,14 @@ parameter:
 //---------------------------------------------------------------------
 forward_declaration:
     T_FORWARD T_ANIMATION T_ID T_LPAREN animation_parameter T_RPAREN
+    {
+	Symbol_table *table = Symbol_table::instance();
+	Animation_block *block = new Animation_block();
+	block->initialize($5,*$3);
+	Symbol *tmp = new Symbol(*$3,block);
+	table->addSymbol(*$3,tmp);
+	
+    }
     ;
 
 //---------------------------------------------------------------------
@@ -478,6 +504,39 @@ animation_block:
 //---------------------------------------------------------------------
 animation_parameter:
     object_type T_ID
+    {
+	Symbol_table *table = Symbol_table::instance();
+	Game_object *obj;
+	if($1 == TRIANGLE)
+	{
+		obj = new Triangle();
+	}
+	else if($1 == CIRCLE)
+	{
+		obj = new Circle();
+	}
+	else if($1 == RECTANGLE)
+	{
+		obj = new Rectangle();
+	}
+	else if($1 == PIXMAP)
+	{
+		obj = new Pixmap();
+	}
+	else if($1 == TEXTBOX)
+	{
+		obj = new Textbox();
+	}
+	
+	obj->never_animate();
+	obj->never_draw();
+
+	Symbol *sym = new Symbol(*$2,obj);
+	table->addSymbol(*$2,sym);
+
+	$$ = sym;
+
+    }
     ;
 
 //---------------------------------------------------------------------
@@ -647,7 +706,28 @@ variable:
 	else $$ = new Variable(table->find(*$1), $3);
 	//$$ = new Variable()
     }
-    | T_ID T_PERIOD T_ID{}
+    | T_ID T_PERIOD T_ID
+    {
+	Symbol_table *table = Symbol_table::instance();
+	Symbol *found = table->lookup(*$1);
+	Gpl_type type;
+	Status status;
+	if(!found)
+	{
+		$$ = new Variable(new Symbol("undclared",0));
+	}
+	else
+	{
+		if(found->get_type() != GAME_OBJECT)
+		{
+
+		}
+		else
+		{
+			$$ = new Variable(*$3,found);
+		}
+	}
+    }
     | T_ID T_LBRACKET expression T_RBRACKET T_PERIOD T_ID{}
     ;
 
@@ -694,6 +774,7 @@ expression:
     }
     | expression T_ASTERISK expression
     {
+	//assert(false);////////
 	if($1->get_type() == STRING || $3->get_type() == STRING){
 		if($1->get_type() == STRING)
 		{

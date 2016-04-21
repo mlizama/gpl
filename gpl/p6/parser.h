@@ -33,6 +33,7 @@
 #include "rectangle.h"
 #include "textbox.h"
 #include "pixmap.h"
+#include "animation_block.h"
 
 #include <string>
 #include "variable.h" 

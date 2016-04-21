@@ -7,7 +7,7 @@
 #include <string>
 #include <assert.h>     /* assert */
 
-Animation_block* Expression::get_animation()
+Animation_block* get_animation()
 {
 	return m_variable->get_animation_block();
 	//return NULL;

@@ -3,7 +3,7 @@
 
 #include "expression.h"
 #include "gpl_type.h"
-#include "animation_block.h"
+#include "animation_block"
 #include <iostream>
 
 using namespace std;

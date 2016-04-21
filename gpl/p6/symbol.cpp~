@@ -1,4 +1,8 @@
 #include "symbol.h"
+Animation_block* Symbol::get_animation_block_value()
+{
+	return block;
+}
 bool Symbol::is_game_object()
 {
 	if(s_type == GAME_OBJECT)
@@ -9,6 +13,13 @@ bool Symbol::is_game_object()
 	{
 		return false;
 	}
+}
+Symbol::Symbol(string name, Animation_block *a_block)
+{
+	s_type = ANIMATION_BLOCK;
+	s_id = name;
+	block = a_block;
+	s_data = NULL;
 }
 void Symbol::set(int x)
 {
@@ -133,9 +144,10 @@ void Symbol::print(ostream &os)
 			
 		}
 	}
+	//else if(s_type == GAME_OBJECT)
 	else if(s_type == GAME_OBJECT)
 	{
-		game->print(os);
+		game->print(s_id,os);
 		//os << "hello";
 	}
 }

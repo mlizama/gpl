@@ -3,6 +3,7 @@
 
 #include "gpl_type.h"
 #include "game_object.h"
+#include "animation_block.h"
 #include <iostream>
 
 
@@ -19,14 +20,18 @@ class Symbol
 		void *   s_data;
 		Gpl_type m_base;
 		Game_object *game;
+		Animation_block *block;
 
 	Symbol(string name, int value);
 	Symbol(string name, double value);
         Symbol(string name, string value);
 	Symbol(string name, Gpl_type type, int size);
 	Symbol(string name, Game_object *game_obj);
+	Symbol(string name, Animation_block *a_block);
 
 	Game_object * get_game_object_value();
+	Animation_block* get_animation_block_value();
+
 	bool is_game_object();
 	void set(int x);
 
