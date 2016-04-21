@@ -23,6 +23,7 @@ class Variable
 		Variable(Symbol* symb);
 		Variable(Symbol* symb, Expression *expp);
 		Variable(string m_id1, Symbol* symb);
+		Variable(string m_id1, Symbol* symb, Expression* expres);
 		Gpl_type get_type();
 		int get_int_value();
 		double get_double_value();

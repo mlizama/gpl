@@ -2,6 +2,19 @@
 #include "expression.h"
 #include <assert.h>     /* assert */
 
+
+Variable::Variable(string m_id1, Symbol* symb, Expression* expres)
+{
+	int index = expres->eval_int();
+	m_id = m_id1;
+	sym = symb;
+	exp = expres;
+	game = symb->get_game_object_value_at_index(index);
+
+
+	game->get_member_variable_type(m_id1,m_type);
+	
+}
 Animation_block* Variable::get_animation_block()
 {
 	return sym->get_animation_block_value();
@@ -70,7 +83,16 @@ double Variable::get_double_value()
 {
 	if(sym)
 	{
+		if(m_id != "")
+		{	
+			//assert(false);
+			double value;
+			game->get_member_variable(m_id, value);
+			return value;
+		}
+		else{
 		return sym->get_double_value();
+		}
 	}
 	else if (exp)//only called when this is an expression int x = a[5 + y]
 	{
@@ -85,8 +107,16 @@ string Variable::get_string_value()
 {
 	if(sym)
 	{
-	
+		if(m_id != "")
+		{	
+			//assert(false);
+			string value;
+			game->get_member_variable(m_id, value);
+			return value;
+		}
+		else{
 		return sym->get_string_value();
+		}
 
 	}
 	else if (exp)//only called when this is an expression int x = a[5 + y]

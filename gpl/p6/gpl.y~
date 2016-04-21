@@ -151,7 +151,7 @@ int lines = 0;
 %type <union_expression> optional_initializer
 %type <union_operator> math_operator
 %type <union_variable> variable
-%type <union_int> object_type
+%type <union_gpl_type> object_type
 %type <union_symbol> animation_parameter 
 //%type <%union> optional_initializer
 
@@ -364,6 +364,23 @@ object_declaration:
     }
 
     | object_type T_ID T_LBRACKET expression T_RBRACKET
+    {
+	Symbol_table *table = Symbol_table::instance();
+	if($4->get_type() == INT)
+	{
+
+		 Symbol *sym = new Symbol(*$2, $1, $4->eval_int());
+		table->addSymbol(*$2,sym);
+	}
+	else if($4->get_type() == DOUBLE)
+	{
+		//error
+	}
+	else if($4->get_type() == STRING)
+	{
+		//errro
+	}
+    }
     ;
 
 //---------------------------------------------------------------------
@@ -724,18 +741,29 @@ variable:
 		}
 		else
 		{
-			int ints;
-			Game_object *game = found->get_game_object_value();
-
-			if(game->get_member_variable(*$3, ints) == MEMBER_NOT_OF_GIVEN_TYPE)
-			{
-				$$ = new Variable(*$3,found);
-			}
-			//$$ = new Variable(*$3,found);
+			$$ = new Variable(*$3,found);
 		}
 	}
     }
-    | T_ID T_LBRACKET expression T_RBRACKET T_PERIOD T_ID{}
+    | T_ID T_LBRACKET expression T_RBRACKET T_PERIOD T_ID
+    {
+	Symbol_table *table = Symbol_table::instance();
+	Symbol *sym = table->lookup(*$1);
+	int size = sym->size();
+	if( sym == NULL)
+	{
+		//error
+	}
+	else if($3->get_type() == INT)
+	{
+		cout << "inside";
+		$$ = new Variable(*$6, sym, $3);
+	}
+	else 
+	{
+		//error
+	}
+    }
     ;
 
 //---------------------------------------------------------------------

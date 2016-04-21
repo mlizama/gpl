@@ -31,6 +31,7 @@ class Symbol
 
 	Game_object * get_game_object_value();
 	Animation_block* get_animation_block_value();
+	Game_object* get_game_object_value_at_index(int index);
 
 	bool is_game_object();
 	void set(int x);

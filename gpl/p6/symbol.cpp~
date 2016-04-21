@@ -1,4 +1,15 @@
 #include "symbol.h"
+#include "triangle.h"
+#include "circle.h"
+#include "rectangle.h"
+#include "pixmap.h"
+#include "textbox.h"
+
+
+Game_object* Symbol::get_game_object_value_at_index(int index) 
+{
+  return ((Game_object**)m_data)[index];
+}
 Animation_block* Symbol::get_animation_block_value()
 {
 	return block;
@@ -91,7 +102,7 @@ Symbol::Symbol(string name, Gpl_type type, int size)
 		}
 		s_data = (void*)tmp;
 	}
-	else
+	else if (type == STRING_ARRAY)
 	{
 		m_base = STRING;
 		string *tmp = new string[size];
@@ -101,12 +112,49 @@ Symbol::Symbol(string name, Gpl_type type, int size)
 		}
 		s_data = (void*)tmp;
 	}
+	else //(type == GAME_OBJECT)
+	{				
+		s_type = GAME_OBJECT_ARRAY;
+		Game_object** tmp = new Game_object*[size];
+		for(int x = 0;x < size; x++)
+		{
+			if(type == CIRCLE)
+			{
+
+				m_base = CIRCLE;
+				tmp[x] = new Circle();
+			}
+			else if(type == RECTANGLE)
+			{
+				m_base = RECTANGLE;
+				tmp[x] = new Rectangle();
+			}
+			else if(type == TRIANGLE)
+			{
+				m_base = TRIANGLE;
+				tmp[x] = new Triangle();
+			}
+			else if(type == PIXMAP)
+			{
+				m_base = PIXMAP;
+				tmp[x] = new Pixmap();
+			}
+			else if(type == TEXTBOX)
+			{
+				m_base = TEXTBOX;
+				tmp[x] = new Textbox();
+			}
+	
+		}
+		s_data = tmp;
+	}
 	
 
 }
 
 void Symbol::print(ostream &os)
 {
+
 	if(s_type == INT)
 	{
 		os << "int " << s_id << " = " << *((int*)s_data) << endl;
@@ -144,11 +192,24 @@ void Symbol::print(ostream &os)
 			
 		}
 	}
-	//else if(s_type == GAME_OBJECT)
+
 	else if(s_type == GAME_OBJECT)
 	{
 		game->print(s_id,os);
-		//os << "hello";
+	}
+	else if(s_type == ANIMATION_BLOCK)
+	{
+		os << "animation_block " << s_id << endl;
+	}
+	else if(s_type == GAME_OBJECT_ARRAY)
+	{
+		//cout << s_size;
+		for(int x = 0; x < s_size; x++)
+		{
+			string name = s_id + "[" + to_string(x) + "]";
+      			((Game_object**)s_data)[x]->print(name, os);
+		}
+
 	}
 }
 int Symbol::get_int_value() const
