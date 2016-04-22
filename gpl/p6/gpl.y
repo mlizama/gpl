@@ -497,15 +497,23 @@ parameter:
 		else if(type == ANIMATION_BLOCK)
 		{
 			//std::cout << "xxxxxxxxxllxxx";
-			//if(exp_type == ANIMATION_BLOCK)
-			//{
+			if(exp_type == ANIMATION_BLOCK)
+			{
+				
+				Symbol *sym = $3->get_animation()->get_parameter_symbol();
+				Game_object *obj = sym->get_game_object_value();
+				if(cur_object_under_construction->type() != obj->type())
+				{
+				Error::error(Error::TYPE_MISMATCH_BETWEEN_ANIMATION_BLOCK_AND_OBJECT,name_cur_object_under_construction, $3->get_animation()->name());
+				}
+				else
 				cur_object_under_construction->set_member_variable(*$1, $3->get_animation());
-			//}
-			//else
-			//{
-				//error goes here
+			}
+			else
+			{
+			Error::error(Error::TYPE_MISMATCH_BETWEEN_ANIMATION_BLOCK_AND_OBJECT,name_cur_object_under_construction, "d");
 			 //	Error::error(Error::INCORRECT_CONSTRUCTOR_PARAMETER_TYPE,name_cur_object_under_construction,*$1);
-			//}
+			}
 		}
 	}
 	else
